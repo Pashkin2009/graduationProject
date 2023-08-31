@@ -1,17 +1,18 @@
 package ru.pavel.graduationProject.models;
 
 
-
+import org.springframework.data.annotation.Id;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
-import java.util.Date;
+
 
 
 @Entity
 @Table(name = "people")
 public class Person {
+    @javax.persistence.Id
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,14 +49,6 @@ public class Person {
         this.username = username;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getUsername() {
         return username;
     }
@@ -87,5 +80,13 @@ public class Person {
                 ", username='" + username + '\'' +
                 ", role='" + role + '\'' +
                 '}';
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 }
