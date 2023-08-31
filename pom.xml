@@ -8,13 +8,13 @@
 		<version>2.5.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>ru.alishev.springcourse</groupId>
+	<groupId>ru.pavel.graduationProject</groupId>
 	<artifactId>graduationProject</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>FirstSecurityApp</name>
-	<description>First Spring Boot app with Spring Security</description>
+	<name>graduationProject</name>
+	<description>Spring Boot app </description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>20</java.version>
 	</properties>
 	<dependencies>
 		<dependency>

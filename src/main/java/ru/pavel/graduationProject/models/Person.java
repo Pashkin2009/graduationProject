@@ -44,7 +44,7 @@ public class Person {
     public Person() {
     }
 
-    public Person(String username, int yearOfBirth) {
+    public Person(String username) {
         this.username = username;
     }
 
