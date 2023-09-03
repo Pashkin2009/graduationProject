@@ -12,9 +12,7 @@ import ru.pavel.graduationProject.security.PersonDetails;
 
 import java.util.Optional;
 
-/**
- * @author Neil Alishev
- */
+
 @Service
 public class PersonDetailsService implements UserDetailsService {
 
