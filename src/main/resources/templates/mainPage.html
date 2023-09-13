@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Main Page</title>
+</head>
+<body>
+<form th:method="POST" th:action="@{/main/select}">
+    <label for="Group1form"> Выберите первую группу</label>
+    <select th:object="${group1}" th:field="*{id}" id="Group1form">
+            <option th:each="group1:${groups1}" th:value="${group1.getId()}" th:text="${group1.getGroupName()}"></option>
+    </select>
+    <br/>
+    <label for="Group2form"> Выберите первую группу</label>
+    <select th:object="${group2}" th:field="*{id}" id="Group2form">
+        <option th:each="group2:${groups2}" th:value="${group2.getId()}" th:text="${group2.getGroupName()}"></option>
+    </select>
+    <br/>
+    <label for="taskForm"> Выберите задание</label>
+    <select th:object="${taskName}" th:field="*{id}" id="taskForm"  >
+        <option th:each="taskName:${taskNames}" th:value="${taskName.getId()}" th:text="${taskName.getSampleName()}"></option>
+    </select>
+    <br/>
+    <input type="submit" value="Выбрать данные"/>
+</form>
+</body>
+</html>

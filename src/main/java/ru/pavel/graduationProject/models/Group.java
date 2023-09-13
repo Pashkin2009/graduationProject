@@ -1,12 +1,11 @@
 package ru.pavel.graduationProject.models;
 
 import org.springframework.data.annotation.Id;
-
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "group")
+@Table(name = "groups")
 public class Group {
     @javax.persistence.Id
     @Id
@@ -14,14 +13,14 @@ public class Group {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "group_name")
-    private String group_name;
+    private String groupName;
 
     @OneToMany(mappedBy = "group")
     private List<Learner> learners;
     public Group(){};
 
     public Group(String group_name) {
-        this.group_name = group_name;
+        this.groupName = group_name;
     }
 
     public int getId() {
@@ -32,12 +31,12 @@ public class Group {
         this.id = id;
     }
 
-    public String getGroup_name() {
-        return group_name;
+    public String getGroupName() {
+        return groupName;
     }
 
-    public void setGroup_name(String group_name) {
-        this.group_name = group_name;
+    public void setGroupName(String group_name) {
+        this.groupName = group_name;
     }
 
     public List<Learner> getLearners() {
@@ -52,7 +51,7 @@ public class Group {
     public String toString() {
         return "Group{" +
                 "id=" + id +
-                ", group_name='" + group_name + '\'' +
+                ", group_name='" + groupName + '\'' +
                 '}';
     }
 }
