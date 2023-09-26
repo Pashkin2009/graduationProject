@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detail Result Page</title>
+</head>
+<body>
+<h3  style="text-align: center">Детальные результаты</h3>
+<h3>Данные для первой группы</h3>
+<h3> Результаты тестов:</h3>
+<table>
+    <thead>
+    <tr>
+        <th> Обучающийся </th>
+        <th> Результат до начала эксперемента</th>
+        <th> Результат после эксперемента</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="data1:${dataListG1CF}">
+        <td><span th:text="${studentNameG1.get(data1Stat.index)+' '+studentLastnameG1.get(data1Stat.index)}"> Результат </span></td>
+        <td><span th:text="${data1}"> Результат </span></td>
+        <td><span th:text="${dataListG1CT.get(data1Stat.index)}"> Результат </span></td>
+    </tr>
+    </tbody>
+</table>
+<h3>Данные для второй группы</h3>
+<h3> Результаты тестов:</h3>
+<table>
+    <thead>
+    <tr>
+        <th> Обучающийся </th>
+        <th> Результат до начала эксперемента</th>
+        <th> Результат после эксперемента</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="data2:${dataListG2CF}">
+        <td><span th:text="${studentNameG2.get(data2Stat.index)+' '+studentLastnameG2.get(data2Stat.index)}"> Результат </span></td>
+        <td><span th:text="${data2}"> Результат </span></td>
+        <td><span th:text="${dataListG2CT.get(data2Stat.index)}"> Результат </span></td>
+    </tr>
+    </tbody>
+</table>
+<br/>
+<a href="/main">Вернуться</a>
+</body>
+</html>

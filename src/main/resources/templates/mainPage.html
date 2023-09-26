@@ -20,6 +20,13 @@
     <select th:object="${taskName}" th:field="*{id}" id="taskForm"  >
         <option th:each="taskName:${taskNames}" th:value="${taskName.getId()}" th:text="${taskName.getSampleName()}"></option>
     </select>
+    <div th:switch="${check}">
+        <span style="color: red" th:case="1" th:text="'группы одинаковые'"></span>
+        <span style="color: red" th:case="2" th:text="'у группы 1 нет контрольного задания до начала эксперемента'"></span>
+        <span style="color: red" th:case="3" th:text="'у группы 2 нет контрольного задания до начала эксперемента'"></span>
+        <span style="color: red" th:case="4" th:text="'у группы 1 нет контрольного задания после эксперемента'"></span>
+        <span style="color: red" th:case="5" th:text="'у группы 2 нет контрольного задания после эксперемента'"></span>
+    </div>
     <br/>
     <input type="submit" value="Выбрать данные"/>
 </form>

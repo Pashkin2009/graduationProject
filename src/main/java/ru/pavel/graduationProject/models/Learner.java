@@ -1,7 +1,6 @@
 package ru.pavel.graduationProject.models;
 
 import org.springframework.data.annotation.Id;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -13,22 +12,33 @@ public class Learner {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @ManyToOne
-    @JoinColumn(name = "group_id", referencedColumnName = "id")
-    private Group group;
-    @OneToMany(mappedBy = "learner")
-    private List<Sample> samples;
     @Column(name = "first_name")
     private String first_name;
     @Column(name = "last_name")
     private String last_name;
 
-    public Learner(Group group, String first_name, String last_name) {
+    @ManyToOne
+    @JoinColumn(name = "group_id", referencedColumnName = "id")
+    private Group group;
+
+    @OneToMany(mappedBy = "learner")
+    private List<Sample> samples;
+
+
+    public List<Sample> getSamples() {
+        return samples;
+    }
+
+    public void setSamples(List<Sample> samples) {
+        this.samples = samples;
+    }
+    public Learner(Group group, List<Sample> samples, String first_name, String last_name) {
         this.group = group;
+        this.samples = samples;
         this.first_name = first_name;
         this.last_name = last_name;
     }
+
     public Learner(){};
 
     public Group getGroup() {

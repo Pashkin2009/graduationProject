@@ -13,7 +13,7 @@ public class Sample {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @ManyToOne
-    @JoinColumn(name = "task_name", referencedColumnName = "id")
+    @JoinColumn(name = "task_name_id", referencedColumnName = "id")
     private TaskName taskName;
 
     @ManyToOne
