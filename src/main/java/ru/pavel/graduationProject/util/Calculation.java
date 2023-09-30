@@ -1,45 +1,36 @@
 package ru.pavel.graduationProject.util;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.pavel.graduationProject.services.SampleService;
 
+
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
 public class Calculation {
 
-    private SampleService sampleService;
+    private final SampleService sampleService;
+    private final NumberFormulas numberFormulas;
+    private final RealFormulas realFormulas;
+    private final BooleanFormulas booleanFormulas;
     private int checkResult = 0;
-    private int needColum;
-    private List<Integer> listIt;
-    private List<Integer> integerListG1;
-    private List<Boolean> booleanListG1;
-    private List<Double> doubleListG1;
-    private List<Integer> integerListG2;
-    private List<Boolean> booleanListG2;
-    private List<Double> doubleListG2;
 
-    public Calculation() {
-    }
-    @Autowired
-    public Calculation(SampleService sampleService, List<Integer> listIt, List<Integer> integerListG1, List<Boolean> booleanListG1, List<Double> doubleListG1, List<Integer> integerListG2, List<Boolean> booleanListG2, List<Double> doubleListG2) {
+    private int needColum=0;
+
+
+
+    public Calculation(SampleService sampleService, NumberFormulas numberFormulas, RealFormulas realFormulas, BooleanFormulas booleanFormulas) {
         this.sampleService = sampleService;
-        this.listIt = listIt;
-        this.integerListG1 = integerListG1;
-        this.booleanListG1 = booleanListG1;
-        this.doubleListG1 = doubleListG1;
-        this.integerListG2 = integerListG2;
-        this.booleanListG2 = booleanListG2;
-        this.doubleListG2 = doubleListG2;
+        this.numberFormulas = numberFormulas;
+        this.realFormulas = realFormulas;
+        this.booleanFormulas = booleanFormulas;
     }
 
-    public void setListIt(List<Integer> listIt) {
-        this.listIt = listIt;
-    }
+
+
+
     public int getCheckResult() {
         return checkResult;
     }
@@ -56,125 +47,143 @@ public class Calculation {
         this.needColum = needColum;
     }
 
-    public void setIntegerListG1(List<Integer> integerListG1) {
-        this.integerListG1 = integerListG1;
-    }
-
-    public void setBooleanListG1(List<Boolean> booleanListG1) {
-        this.booleanListG1 = booleanListG1;
-    }
-
-    public void setDoubleListG1(List<Double> doubleListG1) {
-        this.doubleListG1 = doubleListG1;
-    }
-
-    public void setIntegerListG2(List<Integer> integerListG2) {
-        this.integerListG2 = integerListG2;
-    }
-
-    public void setBooleanListG2(List<Boolean> booleanListG2) {
-        this.booleanListG2 = booleanListG2;
-    }
-
-    public void setDoubleListG2(List<Double> doubleListG2) {
-        this.doubleListG2 = doubleListG2;
-    }
-
-    public List<Integer> getIntegerListG1() {
-        return integerListG1;
-    }
-
-    public List<Boolean> getBooleanListG1() {
-        return booleanListG1;
-    }
-
-    public List<Double> getDoubleListG1() {
-        return doubleListG1;
-    }
-
-    public List<Integer> getIntegerListG2() {
-        return integerListG2;
-    }
-
-    public List<Boolean> getBooleanListG2() {
-        return booleanListG2;
-    }
-
-    public List<Double> getDoubleListG2() {
-        return doubleListG2;
-    }
-
-    public List<Integer> getListIt() {
-        return listIt;
-    }
-
-    public void stringToList(String mainStr){
-      setListIt(Stream.of(mainStr.split(",",-1))
-              .map(String::trim)
-              .map(Integer::parseInt)
-              .collect(Collectors.toList()));
-    }
-
-    private void setAllList(boolean controlTask){
-        setDoubleListG1(sampleService.findResultDouble(controlTask, this.listIt.get(0), this.listIt.get(2)));
-        setDoubleListG2(sampleService.findResultDouble(controlTask, this.listIt.get(1), this.listIt.get(2)));
-        setIntegerListG1(sampleService.findResultInt(controlTask, this.listIt.get(0), this.listIt.get(2)));
-        setIntegerListG2(sampleService.findResultInt(controlTask, this.listIt.get(1), this.listIt.get(2)));
-        setBooleanListG1(sampleService.findResultBoolean(controlTask, this.listIt.get(0), this.listIt.get(2)));
-        setBooleanListG2(sampleService.findResultBoolean(controlTask, this.listIt.get(1), this.listIt.get(2)));
-        }
-        public void checkResult(){
-        setAllList(false);//control task false. Контрольное задание до начала эксперемента
-        if (listIt.get(0).equals(listIt.get(1)))
-        {
-            System.out.println("группы одинаковые");
+    public void checkResult(String UserChoose) {
+        List<Integer> chooseList = Stream.of(UserChoose.split(",", -1))
+                .map(String::trim)
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
+        //(!DG1CTF.isEmpty()&&DG1CTF.get(DG1CTF.size()-1)!=null)
+        setNeedColum(0);
+        setCheckResult(0);
+        //проверка на одинаковые группы
+        if (chooseList.get(0).equals(chooseList.get(1))) {
             setCheckResult(1);
-            return;
+            setNeedColum(0);
+            System.out.println("Группы одинаковые");
         }
-        else if(doubleListG1.isEmpty()&&integerListG1.isEmpty()&&booleanListG1.isEmpty())
-        {
-            System.out.println("у группы 1 нет этого задания CTF");
-            setCheckResult(2);
-            return;
-        }
-        else if(doubleListG2.isEmpty()&&integerListG2.isEmpty()&&booleanListG2.isEmpty())
-        {
-            System.out.println("у группы 2 нет этого задания CTF");
-            setCheckResult(3);
-            return;
-        }
-        setAllList(true);//control task true. Контрольное задание после начала эксперемента
-        if(doubleListG1.isEmpty()&&integerListG1.isEmpty()&&booleanListG1.isEmpty())
-        {
-            System.out.println("у группы 1 нет этого задания CTT");
-            setCheckResult(4);
-            return;
-        }
-        else if(doubleListG2.isEmpty()&&integerListG2.isEmpty()&&booleanListG2.isEmpty())
-        {
-            System.out.println("у группы 2 нет этого задания CTT");
-            setCheckResult(5);
-            return;
-        }
-            if (!(doubleListG1.get(0) ==null)){
-                System.out.println("Лист double не пуст");
-                setNeedColum(1);
-            }
-            else if (!(integerListG1.get(0) ==null)){
-                System.out.println("Лист integer не пуст");
-                setNeedColum(2);
-            }
-            else if (!(booleanListG1.get(0) ==null)){
-                System.out.println("Лист boolean не пуст");
-                setNeedColum(3);
+        else {
+            realFormulas.setGroup1CTF(sampleService.findResultDouble(false,chooseList.get(0),chooseList.get(2)));
+            if (!realFormulas.getGroup1CTF().isEmpty() && realFormulas.getGroup1CTF().get(realFormulas.getGroup1CTF().size() - 1) != null) {
+                realFormulas.setGroup1CTT(sampleService.findResultDouble(true, chooseList.get(0), chooseList.get(2)));
+
+                if (!realFormulas.getGroup1CTT().isEmpty() && realFormulas.getGroup1CTT().get(realFormulas.getGroup1CTT().size() - 1) != null) {
+                    System.out.println("Группа 1 используется double");
+                    setCheckResult(0);
+                    setNeedColum(1);
+                } else {
+                    System.out.println("Группа 1 нет данных double CTT");
+                    setCheckResult(2);
+                    setNeedColum(0);
+                }
             }
             else
             {
-                System.out.println("Все листы путые");
+                numberFormulas.setGroup1CTF(sampleService.findResultInt(false,chooseList.get(0),chooseList.get(2)));
+
+                if (!numberFormulas.getGroup1CTF().isEmpty() && numberFormulas.getGroup1CTF().get(numberFormulas.getGroup1CTF().size() - 1) != null) {
+                    numberFormulas.setGroup1CTT(sampleService.findResultInt(true, chooseList.get(0), chooseList.get(2)));
+
+                    if (!numberFormulas.getGroup1CTT().isEmpty() && numberFormulas.getGroup1CTT().get(numberFormulas.getGroup1CTT().size() - 1) != null) {
+                        System.out.println("Группа 1 используется integer");
+                        setCheckResult(0);
+                        setNeedColum(2);
+                    } else {
+                        System.out.println("Группа 1 нет данных integer CTT");
+                        setCheckResult(2);
+                        setNeedColum(0);
+                    }
+                }
+                else
+                {
+                    booleanFormulas.setGroup1CTF(sampleService.findResultBoolean(false,chooseList.get(0),chooseList.get(2)));
+
+                    if (!booleanFormulas.getGroup1CTF().isEmpty() && booleanFormulas.getGroup1CTF().get(booleanFormulas.getGroup1CTF().size() - 1) != null) {
+                        booleanFormulas.setGroup1CTT(sampleService.findResultBoolean(true, chooseList.get(0), chooseList.get(2)));
+
+                        if (!booleanFormulas.getGroup1CTT().isEmpty() && booleanFormulas.getGroup1CTT().get(booleanFormulas.getGroup1CTT().size() - 1) != null) {
+                            System.out.println("Группа 1 используется boolean");
+                            setCheckResult(0);
+                            setNeedColum(2);
+                        } else {
+                            System.out.println("Группа 1 нет данных boolean CTT");
+                            setCheckResult(2);
+                            setNeedColum(0);
+                        }
+                    }
+                }
+
             }
-            System.out.println("проверки выполненны всё хорошо ");
-            setCheckResult(0);
+            switch (getNeedColum()){
+                case (0):
+                    System.out.println("У группы 1 нет данных для этого задания");
+                    setCheckResult(5);
+                    setNeedColum(0);
+                    break;
+                case (1):
+                    realFormulas.setGroup2CTF(sampleService.findResultDouble(false,chooseList.get(0),chooseList.get(2)));
+                    if (!realFormulas.getGroup2CTF().isEmpty() && realFormulas.getGroup2CTF().get(realFormulas.getGroup2CTF().size() - 1) != null){
+                        realFormulas.setGroup2CTT(sampleService.findResultDouble(true,chooseList.get(0),chooseList.get(2)));
+                        if (!realFormulas.getGroup2CTT().isEmpty() && realFormulas.getGroup2CTT().get(realFormulas.getGroup2CTF().size() - 1) != null){
+                            setCheckResult(0);
+                            System.out.println("группа 2 используется double");
+                        }
+                        else
+                        {
+                            setCheckResult(3);
+                            setNeedColum(0);
+                            System.out.println("группа 2 нет данных double CTT");
+                        }
+                    }
+                    else{
+                        setCheckResult(4);
+                        System.out.println("группа 2 нет данных double CTF");
+                    }
+                    break;
+                case (2):
+                    numberFormulas.setGroup2CTF(sampleService.findResultInt(false,chooseList.get(0),chooseList.get(2)));
+                    if (!numberFormulas.getGroup2CTF().isEmpty() && numberFormulas.getGroup2CTF().get(numberFormulas.getGroup2CTF().size() - 1) != null){
+                        numberFormulas.setGroup2CTT(sampleService.findResultInt(true,chooseList.get(0),chooseList.get(2)));
+                        if (!numberFormulas.getGroup2CTT().isEmpty() && numberFormulas.getGroup2CTT().get(numberFormulas.getGroup2CTF().size() - 1) != null){
+                            setCheckResult(0);
+                            System.out.println("группа 2 используется integer");
+                        }
+                        else
+                        {
+                            setCheckResult(3);
+                            setNeedColum(0);
+                            System.out.println("группа 2 нет данных integer CTT");
+                        }
+                    }
+                    else{
+                        setCheckResult(4);
+                        setNeedColum(0);
+                        System.out.println("группа 2 нет данных integer CTF");
+                    }
+                    break;
+                case (3):
+                    booleanFormulas.setGroup2CTF(sampleService.findResultBoolean(false,chooseList.get(0),chooseList.get(2)));
+                    if (!booleanFormulas.getGroup2CTF().isEmpty() && booleanFormulas.getGroup2CTF().get(booleanFormulas.getGroup2CTF().size() - 1) != null){
+                        booleanFormulas.setGroup2CTT(sampleService.findResultBoolean(true,chooseList.get(0),chooseList.get(2)));
+                        if (!booleanFormulas.getGroup2CTT().isEmpty() && booleanFormulas.getGroup2CTT().get(booleanFormulas.getGroup2CTF().size() - 1) != null){
+                            setCheckResult(0);
+                            System.out.println("группа 2 используется boolean");
+                        }
+                        else
+                        {
+                            setCheckResult(3);
+                            setNeedColum(0);
+                            System.out.println("группа 2 нет данных boolean CTT");
+                        }
+                    }
+                    else{
+                        setCheckResult(4);
+                        setNeedColum(0);
+                        System.out.println("группа 2 нет данных boolean CTF");
+                    }
+                    break;
+            }
         }
-
-
+        System.out.println("CheckResult="+getCheckResult());
+        System.out.println("NeedColum="+getNeedColum());
+    }
 }

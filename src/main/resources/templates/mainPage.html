@@ -11,22 +11,21 @@
             <option th:each="group1:${groups1}" th:value="${group1.getId()}" th:text="${group1.getGroupName()}"></option>
     </select>
     <br/>
-    <label for="Group2form"> Выберите первую группу</label>
+    <div style="color: red" th:if="${check==2}" th:text="'У группы 1 нет данных после эксперемента'"></div>
+    <label for="Group2form"> Выберите вторую группу</label>
     <select th:object="${group2}" th:field="*{id}" id="Group2form">
         <option th:each="group2:${groups2}" th:value="${group2.getId()}" th:text="${group2.getGroupName()}"></option>
     </select>
-    <br/>
+    <div th:switch="${check}">
+        <span style="color: red" th:case="3" th:text="'У группы 2 нет данных после эксперемента'"></span>
+        <span style="color: red" th:case="4" th:text="'У группы 2 нет данных до эксперемента'"></span>
+        <span style="color: red" th:case="5" th:text="'Нет данных для этого задания'"></span>
+    </div>
     <label for="taskForm"> Выберите задание</label>
     <select th:object="${taskName}" th:field="*{id}" id="taskForm"  >
         <option th:each="taskName:${taskNames}" th:value="${taskName.getId()}" th:text="${taskName.getSampleName()}"></option>
     </select>
-    <div th:switch="${check}">
-        <span style="color: red" th:case="1" th:text="'группы одинаковые'"></span>
-        <span style="color: red" th:case="2" th:text="'у группы 1 нет контрольного задания до начала эксперемента'"></span>
-        <span style="color: red" th:case="3" th:text="'у группы 2 нет контрольного задания до начала эксперемента'"></span>
-        <span style="color: red" th:case="4" th:text="'у группы 1 нет контрольного задания после эксперемента'"></span>
-        <span style="color: red" th:case="5" th:text="'у группы 2 нет контрольного задания после эксперемента'"></span>
-    </div>
+    <div style="color: red" th:if="${check==1}" th:text="'Выбраны одинаковые группы'"></div>
     <br/>
     <input type="submit" value="Выбрать данные"/>
 </form>

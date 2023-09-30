@@ -32,7 +32,8 @@ public class MainPageController {
     public String mainSelect(Model model,
                              @ModelAttribute("group1") Group group1,
                              @ModelAttribute("group2") Group group2,
-                             @ModelAttribute("taskName") TaskName taskName){
+                             @ModelAttribute("taskName") TaskName taskName
+                            ){
         model.addAttribute("check",calculation.getCheckResult());
         model.addAttribute("groups1",groupService.findAll());
         model.addAttribute("groups2",groupService.findAll());
@@ -42,11 +43,10 @@ public class MainPageController {
 @PostMapping("/select")
 public String mainConfirm(
                           @RequestParam("id") String id) {
-        calculation.stringToList(id);
-        calculation.checkResult();
+        calculation.checkResult(id);
         if (calculation.getCheckResult()==0)
         {
-            return "redirect:/result/detail";
+            System.out.println("проверки выполненны");
         }
         return "redirect:/main";
 }

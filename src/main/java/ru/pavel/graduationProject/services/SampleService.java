@@ -37,5 +37,9 @@ public interface SampleService extends JpaRepository<Sample,Integer> {
             "and learner.group_id=?2 " +
             "and sample.task_name_id=?3",nativeQuery = true)
     List<String> getLearnerLastName(boolean f1, int f2, int f3);
-
+    @Query(value = "select var_samp(number_field) from sample join learner on sample.learner_id = learner.id " +
+            "and sample.control_task=?1 " +
+            "and learner.group_id=?2 " +
+            "and sample.task_name_id=?3",nativeQuery = true)
+    double getDispersion(boolean f1, int f2, int f3);
 }
