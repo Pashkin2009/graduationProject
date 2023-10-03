@@ -6,9 +6,61 @@
 </head>
 <body>
 <h3  style="text-align: center">Детальные результаты</h3>
+<div th:object="${NF}">
+
+    <table>
+        <thead>
+        <tr>
+            <th> Формула </th>
+            <th> Результат</th>
+            <th> Значение</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><span th:text="'Критерий крамера до эксперемента'"> Результат </span></td>
+            <td>
+                <span th:if="*{getCramer1()<=1.96}" th:text="'характеристики совпадают'"></span>
+                <span th:unless="*{getCramer1()<=1.96}" th:text="'характеристики не совпадают'"></span>
+            </td>
+            <td>
+                <span th:text="*{Format(getCramer1())}"></span>
+            </td>
+        </tr>
+        <tr>
+            <td><span th:text="'Критерий крамера после эксперемента'"> Результат </span></td>
+            <td>
+                <span th:if="*{getCramer2()<=1.96}" th:text="'характеристики совпадают'"></span>
+                <span th:unless="*{getCramer2()<=1.96}" th:text="'характеристики не совпадают'"></span>
+            </td>
+            <td>
+                <span th:text="*{Format(getCramer2())}"></span>
+            </td>
+        </tr>
+        <tr>
+            <td><span th:text="'Критерий Вилкоксона-Манна-Уитни до эксперемента'"> Результат </span></td>
+            <td>
+                <span th:if="*{getVilkas1()<=1.96}" th:text="'характеристики совпадают'"></span>
+                <span th:unless="*{getVilkas1()<=1.96}" th:text="'характеристики не совпадают'"></span>
+            </td>
+            <td>
+                <span th:text="*{Format(getVilkas1())}"></span>
+            </td>
+        <tr>
+            <td><span th:text="'Критерий Вилкоксона-Манна-Уитни после эксперемента'"> Результат </span></td>
+            <td>
+                <span th:if="*{getVilkas2()<=1.96}" th:text="'характеристики совпадают'"></span>
+                <span th:unless="*{getVilkas2()<=1.96}" th:text="'характеристики не совпадают'"></span>
+            </td>
+            <td>
+                <span th:text="*{Format(getVilkas2())}"></span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
 <h3>Данные для первой группы</h3>
 <h3> Результаты тестов:</h3>
-<div th:object="${NF}">
 <table>
     <thead>
     <tr>
@@ -19,7 +71,7 @@
     </thead>
     <tbody>
     <tr th:each="data1:*{getGroup1CTF()}">
-        <td><span th:text="${NF.getFirstNameGroup1().get(data1Stat.index)+' '+NF.getSecondNameGroup1().get(data1Stat.index)}"> Результат </span></td>
+        <td><span th:text="${F.getFirstNameGroup1().get(data1Stat.index)+' '+F.getSecondNameGroup1().get(data1Stat.index)}"> Результат </span></td>
         <td><span th:text="${data1}"> Результат </span></td>
         <td><span th:text="${NF.getGroup1CTT().get(data1Stat.index)}"> Результат </span></td>
     </tr>
@@ -42,13 +94,13 @@
     </tr>
     <tr>
         <td><span th:text="'Среднее арифметическое'"> Результат </span></td>
-        <td><span th:text="*{averageInt(getGroup1CTF())}"> Результат </span></td>
-        <td><span th:text="*{averageInt(getGroup1CTT())}"> Результат </span></td>
+        <td><span th:text="*{Format(getGroup1CTF())}"> Результат </span></td>
+        <td><span th:text="*{Format(getGroup1CTT())}"> Результат </span></td>
     </tr>
     <tr>
         <td><span th:text="'Дисперсия'"> Результат </span></td>
-        <td><span th:text="*{dispersionFormat(getDispersionGroup1CTF())}"> Результат </span></td>
-        <td><span th:text="*{dispersionFormat(getDispersionGroup1CTT())}"> Результат </span></td>
+        <td><span th:text="*{Format(getDispersionGroup1CTF())}"> Результат </span></td>
+        <td><span th:text="*{Format(getDispersionGroup1CTT())}"> Результат </span></td>
     </tr>
     </tbody>
 </table>
@@ -64,7 +116,7 @@
         </thead>
         <tbody>
         <tr th:each="data2:*{getGroup2CTF()}">
-            <td><span th:text="${NF.getFirstNameGroup2().get(data2Stat.index)+' '+NF.getSecondNameGroup2().get(data2Stat.index)}"> Результат </span></td>
+            <td><span th:text="${F.getFirstNameGroup2().get(data2Stat.index)+' '+F.getSecondNameGroup2().get(data2Stat.index)}"> Результат </span></td>
             <td><span th:text="${data2}"> Результат </span></td>
             <td><span th:text="${NF.getGroup2CTT().get(data2Stat.index)}"> Результат </span></td>
         </tr>
@@ -87,13 +139,13 @@
         </tr>
         <tr>
             <td><span th:text="'Среднее арифметическое'"> Результат </span></td>
-            <td><span th:text="*{averageInt(getGroup2CTF())}"> Результат </span></td>
-            <td><span th:text="*{averageInt(getGroup2CTT())}"> Результат </span></td>
+            <td><span th:text="*{Format(getGroup2CTF())}"> Результат </span></td>
+            <td><span th:text="*{Format(getGroup2CTT())}"> Результат </span></td>
         </tr>
         <tr>
             <td><span th:text="'Дисперсия'"> Результат </span></td>
-            <td><span th:text="*{dispersionFormat(getDispersionGroup2CTF())}"> Результат </span></td>
-            <td><span th:text="*{dispersionFormat(getDispersionGroup2CTT())}"> Результат </span></td>
+            <td><span th:text="*{Format(getDispersionGroup2CTF())}"> Результат </span></td>
+            <td><span th:text="*{Format(getDispersionGroup2CTT())}"> Результат </span></td>
         </tr>
         </tbody>
     </table>

@@ -2,8 +2,6 @@ package ru.pavel.graduationProject.util;
 
 import org.springframework.stereotype.Component;
 import ru.pavel.graduationProject.services.SampleService;
-
-
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -12,6 +10,7 @@ import java.util.stream.Stream;
 public class Calculation {
 
     private final SampleService sampleService;
+    private final Formulas formulas;
     private final NumberFormulas numberFormulas;
     private final RealFormulas realFormulas;
     private final BooleanFormulas booleanFormulas;
@@ -21,8 +20,9 @@ public class Calculation {
 
 
 
-    public Calculation(SampleService sampleService, NumberFormulas numberFormulas, RealFormulas realFormulas, BooleanFormulas booleanFormulas) {
+    public Calculation(SampleService sampleService, Formulas formulas, NumberFormulas numberFormulas, RealFormulas realFormulas, BooleanFormulas booleanFormulas) {
         this.sampleService = sampleService;
+        this.formulas = formulas;
         this.numberFormulas = numberFormulas;
         this.realFormulas = realFormulas;
         this.booleanFormulas = booleanFormulas;
@@ -65,7 +65,6 @@ public class Calculation {
             realFormulas.setGroup1CTF(sampleService.findResultDouble(false,chooseList.get(0),chooseList.get(2)));
             if (!realFormulas.getGroup1CTF().isEmpty() && realFormulas.getGroup1CTF().get(realFormulas.getGroup1CTF().size() - 1) != null) {
                 realFormulas.setGroup1CTT(sampleService.findResultDouble(true, chooseList.get(0), chooseList.get(2)));
-
                 if (!realFormulas.getGroup1CTT().isEmpty() && realFormulas.getGroup1CTT().get(realFormulas.getGroup1CTT().size() - 1) != null) {
                     System.out.println("Группа 1 используется double");
                     setCheckResult(0);
@@ -120,12 +119,16 @@ public class Calculation {
                     setNeedColum(0);
                     break;
                 case (1):
-                    realFormulas.setGroup2CTF(sampleService.findResultDouble(false,chooseList.get(0),chooseList.get(2)));
+                    realFormulas.setGroup2CTF(sampleService.findResultDouble(false,chooseList.get(1),chooseList.get(2)));
                     if (!realFormulas.getGroup2CTF().isEmpty() && realFormulas.getGroup2CTF().get(realFormulas.getGroup2CTF().size() - 1) != null){
-                        realFormulas.setGroup2CTT(sampleService.findResultDouble(true,chooseList.get(0),chooseList.get(2)));
+                        realFormulas.setGroup2CTT(sampleService.findResultDouble(true,chooseList.get(1),chooseList.get(2)));
                         if (!realFormulas.getGroup2CTT().isEmpty() && realFormulas.getGroup2CTT().get(realFormulas.getGroup2CTF().size() - 1) != null){
                             setCheckResult(0);
                             System.out.println("группа 2 используется double");
+                            numberFormulas.setDispersionGroup1CTF(sampleService.getDispersion(false,chooseList.get(0),chooseList.get(2)));
+                            numberFormulas.setDispersionGroup1CTT(sampleService.getDispersion(true,chooseList.get(0),chooseList.get(2)));
+                            numberFormulas.setDispersionGroup2CTF(sampleService.getDispersion(false,chooseList.get(1),chooseList.get(2)));
+                            numberFormulas.setDispersionGroup2CTT(sampleService.getDispersion(true,chooseList.get(1),chooseList.get(2)));
                         }
                         else
                         {
@@ -136,16 +139,25 @@ public class Calculation {
                     }
                     else{
                         setCheckResult(4);
+                        setNeedColum(0);
                         System.out.println("группа 2 нет данных double CTF");
                     }
                     break;
                 case (2):
-                    numberFormulas.setGroup2CTF(sampleService.findResultInt(false,chooseList.get(0),chooseList.get(2)));
+                    numberFormulas.setGroup2CTF(sampleService.findResultInt(false,chooseList.get(1),chooseList.get(2)));
                     if (!numberFormulas.getGroup2CTF().isEmpty() && numberFormulas.getGroup2CTF().get(numberFormulas.getGroup2CTF().size() - 1) != null){
-                        numberFormulas.setGroup2CTT(sampleService.findResultInt(true,chooseList.get(0),chooseList.get(2)));
+                        numberFormulas.setGroup2CTT(sampleService.findResultInt(true,chooseList.get(1),chooseList.get(2)));
                         if (!numberFormulas.getGroup2CTT().isEmpty() && numberFormulas.getGroup2CTT().get(numberFormulas.getGroup2CTF().size() - 1) != null){
                             setCheckResult(0);
                             System.out.println("группа 2 используется integer");
+                            numberFormulas.setDispersionGroup1CTF(sampleService.getDispersion(false,chooseList.get(0),chooseList.get(2)));
+                            numberFormulas.setDispersionGroup1CTT(sampleService.getDispersion(true,chooseList.get(0),chooseList.get(2)));
+                            numberFormulas.setDispersionGroup2CTF(sampleService.getDispersion(false,chooseList.get(1),chooseList.get(2)));
+                            numberFormulas.setDispersionGroup2CTT(sampleService.getDispersion(true,chooseList.get(1),chooseList.get(2)));
+                            numberFormulas.setCramer1(numberFormulas.cramerFormuls(numberFormulas.getGroup1CTF(),numberFormulas.getGroup2CTF(),numberFormulas.getDispersionGroup1CTF(),numberFormulas.getDispersionGroup2CTF()));
+                            numberFormulas.setCramer2(numberFormulas.cramerFormuls(numberFormulas.getGroup1CTT(),numberFormulas.getGroup2CTT(),numberFormulas.getDispersionGroup1CTT(),numberFormulas.getDispersionGroup2CTT()));
+                            numberFormulas.setVilkas1(numberFormulas.vilksonFormuls(numberFormulas.getGroup1CTF(),numberFormulas.getGroup2CTF()));
+                            numberFormulas.setVilkas2(numberFormulas.vilksonFormuls(numberFormulas.getGroup1CTT(),numberFormulas.getGroup2CTT()));
                         }
                         else
                         {
@@ -161,9 +173,9 @@ public class Calculation {
                     }
                     break;
                 case (3):
-                    booleanFormulas.setGroup2CTF(sampleService.findResultBoolean(false,chooseList.get(0),chooseList.get(2)));
+                    booleanFormulas.setGroup2CTF(sampleService.findResultBoolean(false,chooseList.get(1),chooseList.get(2)));
                     if (!booleanFormulas.getGroup2CTF().isEmpty() && booleanFormulas.getGroup2CTF().get(booleanFormulas.getGroup2CTF().size() - 1) != null){
-                        booleanFormulas.setGroup2CTT(sampleService.findResultBoolean(true,chooseList.get(0),chooseList.get(2)));
+                        booleanFormulas.setGroup2CTT(sampleService.findResultBoolean(true,chooseList.get(1),chooseList.get(2)));
                         if (!booleanFormulas.getGroup2CTT().isEmpty() && booleanFormulas.getGroup2CTT().get(booleanFormulas.getGroup2CTF().size() - 1) != null){
                             setCheckResult(0);
                             System.out.println("группа 2 используется boolean");
@@ -183,6 +195,10 @@ public class Calculation {
                     break;
             }
         }
+        formulas.setFirstNameGroup1(sampleService.getLearnerFirstName(false,chooseList.get(0),chooseList.get(2)));
+        formulas.setSecondNameGroup1(sampleService.getLearnerLastName(false,chooseList.get(0),chooseList.get(2)));
+        formulas.setFirstNameGroup2(sampleService.getLearnerFirstName(false,chooseList.get(1),chooseList.get(2)));
+        formulas.setSecondNameGroup2(sampleService.getLearnerLastName(false,chooseList.get(1),chooseList.get(2)));
         System.out.println("CheckResult="+getCheckResult());
         System.out.println("NeedColum="+getNeedColum());
     }

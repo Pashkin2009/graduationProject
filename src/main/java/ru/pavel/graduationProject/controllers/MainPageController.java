@@ -47,6 +47,7 @@ public String mainConfirm(
         if (calculation.getCheckResult()==0)
         {
             System.out.println("проверки выполненны");
+            return "redirect:/result/detail";
         }
         return "redirect:/main";
 }
