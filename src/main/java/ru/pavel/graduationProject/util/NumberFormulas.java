@@ -2,23 +2,28 @@ package ru.pavel.graduationProject.util;
 
 import org.springframework.stereotype.Component;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 @Component
 public class NumberFormulas extends Formulas{
 
-    private List<Integer> group1CTF;
-    private List<Integer> group2CTF;
-    private List<Integer> group1CTT;
-    private List<Integer> group2CTT;
+    private List<Integer> group1CTF;//результаты для группы 1 до эксперемента
+    private List<Integer> group2CTF;//результаты для группы 2 до эксперемента
+    private List<Integer> group1CTT;//результаты для группы 1 после эксперемента
+    private List<Integer> group2CTT;//результаты для группы 2 после эксперемента
 
-    private double dispersionGroup2CTF;
-    private double dispersionGroup1CTF;
-    private double dispersionGroup2CTT;
-    private double dispersionGroup1CTT;
-    private double cramer1;
-    private double cramer2;
-    private double vilkas1;
-    private double vilkas2;
+    private double dispersionGroup2CTF;//подсчет дисперсии для группы 2 до эксперемента
+    private double dispersionGroup1CTF;//подсчет дисперсии для группы 1 до эксперемента
+    private double dispersionGroup2CTT;//подсчет дисперсии для группы 2 после эксперемента
+    private double dispersionGroup1CTT;//подсчет дисперсии для группы 1 после эксперемента
+    private double cramer1;//результат формулы крамера
+    private double cramer2;//результат формулы крамера
+    private double vilkas1;//результат формулы вилксона
+    private double vilkas2;//результат формулы вилксона
+    private ArrayList<ArrayList<Integer>> Score;// лист результатов с баллами по всем группам
+    private ArrayList<List<Double>> xiResultList;//лист с результатами расчета хи формулы
+    private ArrayList<List<Double>> fisherResultList;//лист с результатами расчета формулыфишера
 
     public NumberFormulas(List<String> firstNameGroup1, List<String> secondNameGroup1, List<String> firstNameGroup2, List<String> secondNameGroup2, List<Integer> group1CTF, List<Integer> group2CTF, List<Integer> group1CTT, List<Integer> group2CTT) {
         super(firstNameGroup1, secondNameGroup1, firstNameGroup2, secondNameGroup2);
@@ -124,25 +129,42 @@ public class NumberFormulas extends Formulas{
         this.vilkas2 = vilkas2;
     }
 
-    public String Format(List<Integer> list){
-        double average = (double) list.stream().mapToInt(Integer::intValue).sum() /list.size();
-        if (average%1==0){
-            return new DecimalFormat("#0").format(average);
-        }
-        return new DecimalFormat("#0.000").format(average);
+    public ArrayList<ArrayList<Integer>> getScore() {
+        return Score;
     }
 
-    public String Format(double dispersion){
-        if (dispersion%1==0){
-            return new DecimalFormat("#0").format(dispersion);
-        }
-        return new DecimalFormat("#0.000").format(dispersion);
+    public void setScore(ArrayList<ArrayList<Integer>> score) {
+        Score = score;
     }
+
+    public ArrayList<List<Double>> getXiResultList() {
+        return xiResultList;
+    }
+
+    public void setXiResultList(ArrayList<List<Double>> xiResultList) {
+        this.xiResultList = xiResultList;
+    }
+
+
+   public Double getXiCTF(){return getXiResultList().get(0).get(1);}
+    public Double getXiCTT(){return getXiResultList().get(2).get(3);}
+
+    public ArrayList<List<Double>> getFisherResultList() {
+        return fisherResultList;
+    }
+
+    public void setFisherResultList(ArrayList<List<Double>> fisherResultList) {
+        this.fisherResultList = fisherResultList;
+    }
+
+    public Double getFisherCTF(){return getFisherResultList().get(0).get(1);}
+    public Double getFisherCTT(){return getFisherResultList().get(2).get(3);}
 
     public Double cramerFormuls(List<Integer> list1, List<Integer>list2, double dispersion1, double dispersion2){
     return (Math.sqrt(list1.size()*list2.size())*Math.abs(((double)list1.stream().mapToInt(Integer::intValue).sum() /list1.size())-((double)list2.stream().mapToInt(Integer::intValue).sum() /list2.size())))/
             Math.sqrt(list1.size()*dispersion2+list2.size()*dispersion1);
     }
+
     public Double vilksonFormuls(List<Integer> list1,List<Integer> list2){
         int U=0;
         if (list1.size()<list2.size()){
@@ -165,6 +187,35 @@ public class NumberFormulas extends Formulas{
             }
         }
     return (Math.abs(((list1.size()*list2.size())/2)-U))/Math.sqrt((double) (list1.size() * list2.size() * (list1.size() + list2.size() + 1)) /12);
+    }
+
+    public double percent(int number, int quantity){
+        return ((double) number /quantity)*100;
+    }
+    public ArrayList<List<Double>> xi(ArrayList<ArrayList<Integer>> scoreList,List<Integer> group1list,List<Integer> group2list){
+        ArrayList<List<Double>> xiResult=new ArrayList<>();
+        double d;
+        for (int i=0;i<=3;i++){
+            ArrayList<Double> row=new ArrayList<>();
+            for (int j=0;j<=3;j++){
+                d=0.0;
+                for (List<Integer> x:scoreList){
+                    if (i==j){d=0.0;}
+                    else {
+                        if (j%2==0){
+                            d +=Math.pow(((double) x.get(i) / group2list.size()) - ((double) x.get(j) / group1list.size()), 2)/(x.get(i) + x.get(j));
+                        }
+                        else {
+                            d +=Math.pow(((double) x.get(i) / group1list.size()) - ((double) x.get(j) / group2list.size()), 2)/(x.get(i) + x.get(j));
+                        }
+                    }
+                }
+                d=group2list.size()*group1list.size()*d;
+                row.add(d);
+            }
+            xiResult.add(row);
+        }
+        return xiResult;
     }
 
 }

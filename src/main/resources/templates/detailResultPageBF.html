@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detail Result Page</title>
+</head>
+<body>
+<h3  style="text-align: center">Детальные результаты</h3>
+<h3  style="text-align: center">Результаты расчета формул</h3>
+<table>
+    <thead>
+    <tr>
+        <th>Формула</th>
+        <th>Результат</th>
+        <th>Значение</th>
+    </tr>
+    </thead>
+    <th:block th:if="${F.getScoreNumber()==2}">
+        <tr>
+            <td><span th:text="'Формула фишера до эксперемента'"> Результат </span></td>
+            <td>
+                <span th:if="${BF.getFisherResultList().get(0).get(1)<=1.64}" th:text="'характеристики совпадают'"></span>
+                <span th:unless="${BF.getFisherResultList().get(0).get(1)<=1.64}" th:text="'характеристики не совпадают'"></span>
+            </td>
+            <td>
+                <span th:text="${BF.Format(BF.getFisherResultList().get(0).get(1))}"></span>
+            </td>
+        </tr>
+        <tr>
+            <td><span th:text="'Формула фишера после эксперемента'"> Результат </span></td>
+            <td>
+                <span th:if="${BF.getFisherResultList().get(2).get(3)<=1.64}" th:text="'характеристики совпадают'"></span>
+                <span th:unless="${BF.getFisherResultList().get(2).get(3)<=1.64}" th:text="'характеристики не совпадают'"></span>
+            </td>
+            <td>
+                <span th:text="${BF.Format(BF.getFisherResultList().get(2).get(3))}"></span>
+            </td>
+        </tr>
+    </th:block>
+</table>
+
+<h3  style="text-align: center">Результаты измерений в порядковой шкале</h3>
+<table>
+    <thead>
+    <tr>
+        <th> Кол-во баллов </th>
+        <th> Контрольная группа до начала эксперемента (чел.)</th>
+        <th> Эксперементальная группа до начала эксперемента (чел.)</th>
+        <th> Контрольная группа после  эксперемента (чел.)</th>
+        <th> Эксперементальная группа после эксперемента (чел.)</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="result:${BF.getScore()}">
+        <td><span th:text="'Баллов '+${resultStat.index+1}"></span></td>
+        <td><span th:text="${result.get(0)}+' составляют '+${F.Format(F.percent(result.get(0),BF.groups.get(0).size()))}+'% группы'"></span></td>
+        <td><span th:text="${result.get(2)}+' составляют '+${F.Format(F.percent(result.get(2),BF.groups.get(2).size()))}+'% группы'"></span></td>
+        <td><span th:text="${result.get(1)}+' составляют '+${F.Format(F.percent(result.get(1),BF.groups.get(1).size()))}+'% группы'"></span></td>
+        <td><span th:text="${result.get(3)}+' составляют '+${F.Format(F.percent(result.get(3),BF.groups.get(3).size()))}+'% группы'"></span></td>
+    </tr>
+    </tbody>
+</table>
+
+<th:block th:if="${BF.getScoreNumber()==2}">
+    <h3  style="text-align: center">Эмпирические значения критерия Фишера</h3>
+    <table>
+        <thead>
+        <tr>
+            <th>  </th>
+            <th> Контрольная группа до начала эксперемента</th>
+            <th> Эксперементальная группа до начала эксперемента </th>
+            <th> Контрольная группа после эксперемента</th>
+            <th> Эксперементальная группа после эксперемента</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="result:${BF.getFisherResultList()}">
+            <td>
+                <span th:if="${resultStat.index==0}" th:text="'Контрольная группа до начала эксперемента'"></span>
+                <span th:if="${resultStat.index==1}" th:text="'Эксперементальная группа до начала эксперемента'"></span>
+                <span th:if="${resultStat.index==2}" th:text="'Контрольная группа после эксперемента'"></span>
+                <span th:if="${resultStat.index==3}" th:text="'Эксперементальная группа после эксперемента'"></span>
+            </td>
+            <td><span th:text="${BF.Format(result.get(0))}"></span></td>
+            <td><span th:text="${BF.Format(result.get(1))}"></span></td>
+            <td><span th:text="${BF.Format(result.get(2))}"></span></td>
+            <td><span th:text="${BF.Format(result.get(3))}"></span></td>
+        </tr>
+        </tbody>
+    </table>
+</th:block>
+
+<h3>Данные для первой группы</h3>
+<h3> Результаты тестов:</h3>
+<table>
+    <thead>
+    <tr>
+        <th> Обучающийся </th>
+        <th> Результат до начала эксперемента</th>
+        <th> Результат после эксперемента</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="data1:${BF.getGroupsString().get(0)}">
+        <td><span th:text="${F.getFirstNameGroup1().get(data1Stat.index)+' '+F.getSecondNameGroup1().get(data1Stat.index)}"> Результат </span></td>
+        <td><span th:text="${data1}"> Результат </span></td>
+        <td><span th:text="${BF.getGroupsString().get(1).get(data1Stat.index)}"> Результат </span></td>
+    </tr>
+    </tbody>
+</table>
+
+<table>
+    <thead>
+    <tr>
+        <th> Значение </th>
+        <th> Результат до начала эксперемента</th>
+        <th> Результат после эксперемента</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><span th:text="'Кол-во записей'"> Результат </span></td>
+        <td><span th:text="${BF.getGroups.get(0).size()}"> Результат </span></td>
+        <td><span th:text="${BF.getGroups.get(1).size()}"> Результат </span></td>
+    </tr>
+    </tbody>
+</table>
+<h3>Данные для второй группы</h3>
+<h3> Результаты тестов:</h3>
+<table>
+    <thead>
+    <tr>
+        <th> Обучающийся </th>
+        <th> Результат до начала эксперемента</th>
+        <th> Результат после эксперемента</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="data2:${BF.getGroupsString().get(2)}">
+        <td><span th:text="${F.getFirstNameGroup2().get(data2Stat.index)+' '+F.getSecondNameGroup2().get(data2Stat.index)}"> Результат </span></td>
+        <td><span th:text="${data2}"> Результат </span></td>
+        <td><span th:text="${BF.getGroupsString().get(3).get(data2Stat.index)}"> Результат </span></td>
+    </tr>
+    </tbody>
+</table>
+
+<table>
+    <thead>
+    <tr>
+        <th> Значение </th>
+        <th> Результат до начала эксперемента</th>
+        <th> Результат после эксперемента</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><span th:text="'Кол-во записей'"> Результат </span></td>
+        <td><span th:text="${BF.getGroups.get(2).size()}"> Результат </span></td>
+        <td><span th:text="${BF.getGroups.get(3).size()}"> Результат </span></td>
+    </tr>
+    </tbody>
+</table>
+<br/>
+<a href="/main">Вернуться</a>
+</body>
+</html>

@@ -5,11 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.pavel.graduationProject.util.Calculation;
-import ru.pavel.graduationProject.util.Formulas;
-import ru.pavel.graduationProject.util.NumberFormulas;
+import ru.pavel.graduationProject.util.*;
 
-import java.util.Arrays;
+import java.util.List;
 
 
 @Controller
@@ -17,12 +15,16 @@ import java.util.Arrays;
 public class DetailResultController {
     private final Calculation calculation;
     private final NumberFormulas numberFormulas;
+    private final RealFormulas realFormulas;
+    private final BooleanFormulas booleanFormulas;
     private final Formulas formulas;
 
     @Autowired
-    public DetailResultController(Calculation calculation, NumberFormulas numberFormulas, Formulas formulas) {
+    public DetailResultController(Calculation calculation, NumberFormulas numberFormulas, RealFormulas realFormulas, BooleanFormulas booleanFormulas, Formulas formulas) {
         this.calculation = calculation;
         this.numberFormulas=numberFormulas;
+        this.realFormulas = realFormulas;
+        this.booleanFormulas = booleanFormulas;
         this.formulas = formulas;
     }
 
@@ -31,19 +33,23 @@ public class DetailResultController {
     {
         if (calculation.getNeedColum()==1){
             System.out.println("Используется колонка double resultPage");
-           return "redirect:/main";
+            model.addAttribute("F",formulas);
+            model.addAttribute("RF",realFormulas);
+            System.out.println(realFormulas.conversionToOrdinalScale(realFormulas.getGroups(),3));
+            return "detailResultPageRF";
         }
         else if (calculation.getNeedColum()==2)
         {   System.out.println("Используется колонка integer resultPage");
             model.addAttribute("F",formulas);
             model.addAttribute("NF",numberFormulas);
-            System.out.println(Arrays.toString(formulas.conversionToOrdinalScale(numberFormulas.getGroup2CTF(),3).toArray()));
-            System.out.println(Arrays.toString(formulas.conversionToOrdinalScale(numberFormulas.getGroup2CTF(),3,5,20).toArray()));
-            return "detailResultPage";
+            return "detailResultPageNF";
         }
         else {
             System.out.println("Используется колонка boolean resultPage");
-            return "redirect:/main";
+            model.addAttribute("F",formulas);
+            model.addAttribute("BF",booleanFormulas);
+            System.out.println(booleanFormulas.getScore().toString());
+            return "detailResultPageBF";
         }
     }
 }

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detail Result Page</title>
+</head>
+<body>
+<h3  style="text-align: center">Детальные результаты</h3>
+    <h3  style="text-align: center">Результаты расчета формул</h3>
+    <table>
+        <thead>
+        <tr>
+            <th> Формула </th>
+            <th> Результат</th>
+            <th> Значение</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><span th:text="'Критерий крамера до эксперемента'"> Результат </span></td>
+            <td>
+                <span th:if="${NF.getCramer1()<=1.96}" th:text="'характеристики совпадают'"></span>
+                <span th:unless="${NF.getCramer1()<=1.96}" th:text="'характеристики не совпадают'"></span>
+            </td>
+            <td>
+                <span th:text="${NF.Format(NF.getCramer1())}"></span>
+            </td>
+        </tr>
+        <tr>
+            <td><span th:text="'Критерий крамера после эксперемента'"> Результат </span></td>
+            <td>
+                <span th:if="${NF.getCramer2()<=1.96}" th:text="'характеристики совпадают'"></span>
+                <span th:unless="${NF.getCramer2()<=1.96}" th:text="'характеристики не совпадают'"></span>
+            </td>
+            <td>
+                <span th:text="${NF.Format(NF.getCramer2())}"></span>
+            </td>
+        </tr>
+        <tr>
+            <td><span th:text="'Критерий Вилкоксона-Манна-Уитни до эксперемента'"> Результат </span></td>
+            <td>
+                <span th:if="${NF.getVilkas1()<=1.96}" th:text="'характеристики совпадают'"></span>
+                <span th:unless="${NF.getVilkas1()<=1.96}" th:text="'характеристики не совпадают'"></span>
+            </td>
+            <td>
+                <span th:text="${NF.Format(NF.getVilkas1())}"></span>
+            </td>
+        <tr>
+            <td><span th:text="'Критерий Вилкоксона-Манна-Уитни после эксперемента'"> Результат </span></td>
+            <td>
+                <span th:if="${NF.getVilkas2()<=1.96}" th:text="'характеристики совпадают'"></span>
+                <span th:unless="${NF.getVilkas2()<=1.96}" th:text="'характеристики не совпадают'"></span>
+            </td>
+            <td>
+                <span th:text="${NF.Format(NF.getVilkas2())}"></span>
+            </td>
+        </tr>
+        <tr>
+            <td><span th:text="'Хи квадрат до эксперемента'"> Результат </span></td>
+            <td>
+                <span th:if="${NF.getXiCTF()<=NF.getAlphaForXi().get(NF.getScoreNumber()-2)}" th:text="'характеристики совпадают'"></span>
+                <span th:unless="${NF.getXiCTF()<=NF.getAlphaForXi().get(NF.getScoreNumber()-2)}" th:text="'характеристики не совпадают'"></span>
+            </td>
+            <td>
+                <span th:text="${NF.Format(NF.getXiCTF())}"></span>
+            </td>
+        </tr>
+        <tr>
+            <td><span th:text="'Хи квадрат после эксперемента'"> Результат </span></td>
+            <td>
+                <span th:if="${NF.getXiCTT()<=NF.getAlphaForXi().get(NF.getScoreNumber()-2)}" th:text="'характеристики совпадают'"></span>
+                <span th:unless="${NF.getXiCTT()<=NF.getAlphaForXi().get(NF.getScoreNumber()-2)}" th:text="'характеристики не совпадают'"></span>
+            </td>
+            <td>
+                <span th:text="${NF.Format(NF.getXiCTT())}"></span>
+            </td>
+        </tr>
+        <th:block th:if="${NF.getScoreNumber()==2}">
+            <tr>
+                <td><span th:text="'Формула фишера до эксперемента'"> Результат </span></td>
+                <td>
+                    <span th:if="${NF.getFisherCTF()<=1.64}" th:text="'характеристики совпадают'"></span>
+                    <span th:unless="${NF.getFisherCTF()<=1.64}" th:text="'характеристики не совпадают'"></span>
+                </td>
+                <td>
+                    <span th:text="${NF.Format(NF.getFisherCTF())}"></span>
+                </td>
+            </tr>
+            <tr>
+                <td><span th:text="'Формула фишера после эксперемента'"> Результат </span></td>
+                <td>
+                    <span th:if="${NF.getFisherCTT()<=1.64}" th:text="'характеристики совпадают'"></span>
+                    <span th:unless="${NF.getFisherCTT()<=1.64}" th:text="'характеристики не совпадают'"></span>
+                </td>
+                <td>
+                    <span th:text="${NF.Format(NF.getFisherCTT())}"></span>
+                </td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+<br/>
+    <h3  style="text-align: center">Результаты измерений в порядковой шкале</h3>
+    <table>
+        <thead>
+        <tr>
+            <th> Кол-во баллов </th>
+            <th> Контрольная группа до начала эксперемента (чел.)</th>
+            <th> Эксперементальная группа до начала эксперемента (чел.)</th>
+            <th> Контрольная группа после  эксперемента (чел.)</th>
+            <th> Эксперементальная группа после эксперемента (чел.)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="result:${NF.getScore()}">
+            <td><span th:text="'Баллов '+${resultStat.index+1}"></span></td>
+            <td><span th:text="${result.get(0)}+' составляют '+${NF.Format(NF.percent(result.get(0),NF.getGroup1CTF().size()))}+'% группы'"></span></td>
+            <td><span th:text="${result.get(1)}+' составляют '+${NF.Format(NF.percent(result.get(1),NF.getGroup2CTF().size()))}+'% группы'"></span></td>
+            <td><span th:text="${result.get(2)}+' составляют '+${NF.Format(NF.percent(result.get(2),NF.getGroup1CTT().size()))}+'% группы'"></span></td>
+            <td><span th:text="${result.get(3)}+' составляют '+${NF.Format(NF.percent(result.get(3),NF.getGroup2CTT().size()))}+'% группы'"></span></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3  style="text-align: center">Эмпирические значения критерия Хи квадрат для данных</h3>
+    <table>
+        <thead>
+        <tr>
+            <th>  </th>
+            <th> Контрольная группа до начала эксперемента</th>
+            <th> Эксперементальная группа до начала эксперемента </th>
+            <th> Контрольная группа после эксперемента</th>
+            <th> Эксперементальная группа после эксперемента</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="result:${NF.getXiResultList()}">
+            <td>
+                <span th:if="${resultStat.index==0}" th:text="'Контрольная группа до начала эксперемента'"></span>
+                <span th:if="${resultStat.index==1}" th:text="'Эксперементальная группа до начала эксперемента'"></span>
+                <span th:if="${resultStat.index==2}" th:text="'Контрольная группа после эксперемента'"></span>
+                <span th:if="${resultStat.index==3}" th:text="'Эксперементальная группа после эксперемента'"></span>
+            </td>
+            <td><span th:text="${NF.Format(result.get(0))}"></span></td>
+            <td><span th:text="${NF.Format(result.get(1))}"></span></td>
+            <td><span th:text="${NF.Format(result.get(2))}"></span></td>
+            <td><span th:text="${NF.Format(result.get(3))}"></span></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <th:block th:if="${NF.getScoreNumber()==2}">
+        <h3  style="text-align: center">Эмпирические значения критерия Фишера</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>  </th>
+                <th> Контрольная группа до начала эксперемента</th>
+                <th> Эксперементальная группа до начала эксперемента </th>
+                <th> Контрольная группа после эксперемента</th>
+                <th> Эксперементальная группа после эксперемента</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="result:${NF.getFisherResultList()}">
+                <td>
+                    <span th:if="${resultStat.index==0}" th:text="'Контрольная группа до начала эксперемента'"></span>
+                    <span th:if="${resultStat.index==1}" th:text="'Эксперементальная группа до начала эксперемента'"></span>
+                    <span th:if="${resultStat.index==2}" th:text="'Контрольная группа после эксперемента'"></span>
+                    <span th:if="${resultStat.index==3}" th:text="'Эксперементальная группа после эксперемента'"></span>
+                </td>
+                <td><span th:text="${NF.Format(result.get(0))}"></span></td>
+                <td><span th:text="${NF.Format(result.get(1))}"></span></td>
+                <td><span th:text="${NF.Format(result.get(2))}"></span></td>
+                <td><span th:text="${NF.Format(result.get(3))}"></span></td>
+            </tr>
+            </tbody>
+        </table>
+    </th:block>
+<h3>Данные для первой группы</h3>
+<h3> Результаты тестов:</h3>
+<table>
+    <thead>
+    <tr>
+        <th> Обучающийся </th>
+        <th> Результат до начала эксперемента</th>
+        <th> Результат после эксперемента</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="data1:${NF.getGroup1CTF()}">
+        <td><span th:text="${F.getFirstNameGroup1().get(data1Stat.index)+' '+F.getSecondNameGroup1().get(data1Stat.index)}"> Результат </span></td>
+        <td><span th:text="${data1}"> Результат </span></td>
+        <td><span th:text="${NF.getGroup1CTT().get(data1Stat.index)}"> Результат </span></td>
+    </tr>
+    </tbody>
+</table>
+
+<table>
+    <thead>
+    <tr>
+        <th> Значение </th>
+        <th> Результат до начала эксперемента</th>
+        <th> Результат после эксперемента</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><span th:text="'Кол-во записей'"> Результат </span></td>
+        <td><span th:text="${NF.getGroup1CTF().size()}"> Результат </span></td>
+        <td><span th:text="${NF.getGroup1CTT().size()}"> Результат </span></td>
+    </tr>
+    <tr>
+        <td><span th:text="'Среднее арифметическое'"> Результат </span></td>
+        <td><span th:text="${NF.Format(NF.getGroup1CTF())}"> Результат </span></td>
+        <td><span th:text="${NF.Format(NF.getGroup1CTT())}"> Результат </span></td>
+    </tr>
+    <tr>
+        <td><span th:text="'Дисперсия'"> Результат </span></td>
+        <td><span th:text="${NF.Format(NF.getDispersionGroup1CTF())}"> Результат </span></td>
+        <td><span th:text="${NF.Format(NF.getDispersionGroup1CTT())}"> Результат </span></td>
+    </tr>
+    </tbody>
+</table>
+<h3>Данные для второй группы</h3>
+<h3> Результаты тестов:</h3>
+    <table>
+        <thead>
+        <tr>
+            <th> Обучающийся </th>
+            <th> Результат до начала эксперемента</th>
+            <th> Результат после эксперемента</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="data2:*{NF.getGroup2CTF()}">
+            <td><span th:text="${F.getFirstNameGroup2().get(data2Stat.index)+' '+F.getSecondNameGroup2().get(data2Stat.index)}"> Результат </span></td>
+            <td><span th:text="${data2}"> Результат </span></td>
+            <td><span th:text="${NF.getGroup2CTT().get(data2Stat.index)}"> Результат </span></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table>
+        <thead>
+        <tr>
+            <th> Значение </th>
+            <th> Результат до начала эксперемента</th>
+            <th> Результат после эксперемента</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><span th:text="'Кол-во записей'"> Результат </span></td>
+            <td><span th:text="${NF.getGroup2CTF().size()}"> Результат </span></td>
+            <td><span th:text="${NF.getGroup2CTT().size()}"> Результат </span></td>
+        </tr>
+        <tr>
+            <td><span th:text="'Среднее арифметическое'"> Результат </span></td>
+            <td><span th:text="${NF.Format(NF.getGroup2CTF())}"> Результат </span></td>
+            <td><span th:text="${NF.Format(NF.getGroup2CTT())}"> Результат </span></td>
+        </tr>
+        <tr>
+            <td><span th:text="'Дисперсия'"> Результат </span></td>
+            <td><span th:text="${NF.Format(NF.getDispersionGroup2CTF())}"> Результат </span></td>
+            <td><span th:text="${NF.Format(NF.getDispersionGroup2CTT())}"> Результат </span></td>
+        </tr>
+        </tbody>
+    </table>
+<br/>
+<a href="/main">Вернуться</a>
+</body>
+</html>

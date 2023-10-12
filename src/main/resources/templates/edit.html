@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit</title>
+</head>
+<body>
+<h3>Редактирование групп</h3>
+
+
+<table>
+    <thead>
+    <tr>
+        <th>№</th>
+        <th>Редактировать название группы</th>
+        <th>Редактировать учасников группы</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tr th:each="group:${allGroup}">
+        <td th:text="${groupStat.index+1}"></td>
+        <td>
+            <form th:method="POST" th:action="@{edit/group/name}">
+            <label for="groupName"></label>
+            <input id="groupName" type="text" name="groupName" th:value="${group.getGroupName()}" />
+            <input type="submit" value="Изменить название"/>
+            </form>
+        </td>
+        <td><a href="/editLerner" th:href="@{edit/editLerner/${group.getId()}}">Редактировать учасников</a></td>
+        <td>
+            <form th:method="POST" th:action="@{edit/group/delete}">
+                <input type="hidden" name="groupId" th:value="${group.getId()}"/>
+                <input type="submit" value="Удалить"/>
+            </form>
+        </td>
+    </tr>
+</table>
+
+
+
+
+
+
+
+<h3>Редактирование заданий</h3>
+
+</body>
+</html>
