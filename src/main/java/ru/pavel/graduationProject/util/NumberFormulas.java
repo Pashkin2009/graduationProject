@@ -192,30 +192,5 @@ public class NumberFormulas extends Formulas{
     public double percent(int number, int quantity){
         return ((double) number /quantity)*100;
     }
-    public ArrayList<List<Double>> xi(ArrayList<ArrayList<Integer>> scoreList,List<Integer> group1list,List<Integer> group2list){
-        ArrayList<List<Double>> xiResult=new ArrayList<>();
-        double d;
-        for (int i=0;i<=3;i++){
-            ArrayList<Double> row=new ArrayList<>();
-            for (int j=0;j<=3;j++){
-                d=0.0;
-                for (List<Integer> x:scoreList){
-                    if (i==j){d=0.0;}
-                    else {
-                        if (j%2==0){
-                            d +=Math.pow(((double) x.get(i) / group2list.size()) - ((double) x.get(j) / group1list.size()), 2)/(x.get(i) + x.get(j));
-                        }
-                        else {
-                            d +=Math.pow(((double) x.get(i) / group1list.size()) - ((double) x.get(j) / group2list.size()), 2)/(x.get(i) + x.get(j));
-                        }
-                    }
-                }
-                d=group2list.size()*group1list.size()*d;
-                row.add(d);
-            }
-            xiResult.add(row);
-        }
-        return xiResult;
-    }
 
 }

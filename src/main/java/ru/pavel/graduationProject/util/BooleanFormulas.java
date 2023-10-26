@@ -12,6 +12,7 @@ public class BooleanFormulas extends Formulas{
     private ArrayList<List<String>> groupsString;
     private ArrayList<ArrayList<Integer>> score;
     private ArrayList<List<Double>> fisherResultList;
+    private ArrayList<List<Double>> xiList;
 
     public BooleanFormulas(List<String> firstNameGroup1, List<String> secondNameGroup1, List<String> firstNameGroup2, List<String> secondNameGroup2, ArrayList<List<Boolean>> groups) {
         super(firstNameGroup1, secondNameGroup1, firstNameGroup2, secondNameGroup2);
@@ -49,6 +50,22 @@ public class BooleanFormulas extends Formulas{
     public void setFisherResultList(ArrayList<List<Double>> fisherResultList) {
         this.fisherResultList = fisherResultList;
     }
+
+    public void setGroups(ArrayList<List<Boolean>> groups) {
+        this.groups = groups;
+    }
+
+    public ArrayList<List<Double>> getXiList() {
+        return xiList;
+    }
+
+    public void setXiList(ArrayList<List<Double>> xiList) {
+        this.xiList = xiList;
+    }
+    public double getXiCTF(){return this.xiList.get(0).get(1);}
+    public double getXiCTT(){return this.xiList.get(2).get(3);}
+    public double getFisherCTF(){return this.fisherResultList.get(0).get(1);}
+    public double getFisherCTT(){return this.fisherResultList.get(2).get(3);}
 
     public ArrayList<List<String>> convertGroupToString(ArrayList<List<Boolean>> groups, String positive, String negative){
         ArrayList<List<String>> main=new ArrayList<>();

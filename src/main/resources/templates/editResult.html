@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" >
+    <title>Task result</title>
+</head>
+<body>
+<form th:method="POST" th:action="@{/edit/task/result/edit}">
+    <input type="hidden" name="groupName" th:value="${groupName}">
+    <input type="hidden" name="taskName" th:value="${taskName}">
+ <table>
+     <thead>
+     <tr>
+         <th>ФИО</th>
+         <th>До эксперемента</th>
+         <th>После эксперемента</th>
+     </tr>
+     </thead>
+     <tr th:each="fio:${FIO}">
+         <td th:text="${fio.getFirstName()+' '+fio.getLastName()}"></td>
+         <td>
+             <label>
+             <input name="before[]" type="text" th:value="${allResult.get(0).get(fioStat.index)}"/>
+             </label>
+         </td>
+         <td>
+             <label>
+                 <input name="after[]" type="text" th:value="${allResult.get(1).get(fioStat.index)}"/>
+             </label>
+         </td>
+     </tr>
+ </table>
+    <input type="submit" value="Редактировать"/>
+</form>
+</body>
+</html>

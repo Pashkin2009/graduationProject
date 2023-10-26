@@ -20,23 +20,31 @@ public class Sample {
     @JoinColumn(name = "learner_id",referencedColumnName = "id")
     private Learner learner;
     @Column(name = "floating_number_field")
-    private float floatingNumberField;
+    private Double floatingNumberField;
     @Column(name = "number_field")
-    private int numberField;
+    private Integer numberField;
     @Column(name = "check_field")
-    private boolean checkField;
+    private Boolean checkField;
     @Column(name = "control_task")
     private boolean controlTask;
 
     public Sample(){}
 
-    public Sample(TaskName taskName, Learner learner, float floatingNumberField, int numberField, boolean checkField, boolean controlTask) {
+    public Sample(TaskName taskName, Learner learner, Double floatingNumberField, Integer numberField, Boolean checkField, boolean controlTask) {
         this.taskName = taskName;
         this.learner = learner;
         this.floatingNumberField = floatingNumberField;
         this.numberField = numberField;
         this.checkField = checkField;
         this.controlTask = controlTask;
+    }
+
+    public boolean isCheckField() {
+        return checkField;
+    }
+
+    public void setCheckField(boolean checkField) {
+        this.checkField = checkField;
     }
 
     public long getId() {
@@ -63,27 +71,27 @@ public class Sample {
         this.learner = learner;
     }
 
-    public float getFloatingNumberField() {
+    public Double getFloatingNumberField() {
         return floatingNumberField;
     }
 
-    public void setFloatingNumberField(float floatingNumberField) {
+    public void setFloatingNumberField(Double floatingNumberField) {
         this.floatingNumberField = floatingNumberField;
     }
 
-    public int getNumberField() {
+    public Integer getNumberField() {
         return numberField;
     }
 
-    public void setNumberField(int numberField) {
+    public void setNumberField(Integer numberField) {
         this.numberField = numberField;
     }
 
-    public boolean isCheckField() {
+    public Boolean getCheckField() {
         return checkField;
     }
 
-    public void setCheckField(boolean checkField) {
+    public void setCheckField(Boolean checkField) {
         this.checkField = checkField;
     }
 
@@ -95,16 +103,4 @@ public class Sample {
         this.controlTask = controlTask;
     }
 
-    @Override
-    public String toString() {
-        return "Sample{" +
-                "id=" + id +
-                ", taskName=" + taskName +
-                ", learner=" + learner +
-                ", floatingNumberField=" + floatingNumberField +
-                ", numberField=" + numberField +
-                ", checkField=" + checkField +
-                ", controlTask=" + controlTask +
-                '}';
-    }
 }

@@ -1,13 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Edit</title>
 </head>
 <body>
+<h3>Редактирование результатов заданий</h3>
+<form th:method="GET" th:action="@{edit/task/result}">
+<label>
+<select name="groupName">
+    <option th:each="groupName:${allGroup}" th:text="${groupName.getGroupName()}" th:value="${groupName.getId()}"></option>
+</select>
+</label>
+<label>
+    <select name="taskName">
+        <option th:each="taskName:${allTask}" th:text="${taskName.getSampleName()}" th:value="${taskName.getId()}"></option>
+    </select>
+</label>
+    <input type="submit" value="Редактировать результаты">
+</form>
 <h3>Редактирование групп</h3>
-
-
 <table>
     <thead>
     <tr>
@@ -23,10 +35,16 @@
             <form th:method="POST" th:action="@{edit/group/name}">
             <label for="groupName"></label>
             <input id="groupName" type="text" name="groupName" th:value="${group.getGroupName()}" />
+            <input type="hidden" name="groupId" th:value="${group.getId()}"/>
             <input type="submit" value="Изменить название"/>
             </form>
         </td>
-        <td><a href="/editLerner" th:href="@{edit/editLerner/${group.getId()}}">Редактировать учасников</a></td>
+        <td>
+            <form th:method="GET" th:action="@{edit/group/{id}(id=${group.getId()})}">
+                <input type="hidden" name="groupId" th:value="${group.getId()}"/>
+                <input type="submit" value="Редактировать учасников"/>
+            </form>
+        </td>
         <td>
             <form th:method="POST" th:action="@{edit/group/delete}">
                 <input type="hidden" name="groupId" th:value="${group.getId()}"/>
@@ -35,14 +53,42 @@
         </td>
     </tr>
 </table>
-
-
-
-
-
-
-
+<form th:method="POST" th:action="@{edit/group/add}">
+    <label for="newGroupName"></label>
+    <input style="margin-left: 22px" placeholder="Название группы" id="newGroupName" type="text" name="newGroupName"/>
+    <input type="submit" value="добавить новую группу"/>
+</form>
 <h3>Редактирование заданий</h3>
-
+<table>
+    <thead>
+    <tr>
+        <th>№</th>
+        <th>Редактировать название группы</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tr th:each="task:${allTask}">
+        <td th:text="${taskStat.index+1}"></td>
+        <td>
+            <form th:method="POST" th:action="@{edit/task/name}">
+                <label for="taskName"></label>
+                <input id="taskName" type="text" name="taskName" th:value="${task.getSampleName()}" />
+                <input type="hidden" name="taskId" th:value="${task.getId()}"/>
+                <input type="submit" value="Изменить название"/>
+            </form>
+        </td>
+        <td>
+            <form th:method="POST" th:action="@{edit/task/delete}">
+                <input type="hidden" name="taskId" th:value="${task.getId()}"/>
+                <input type="submit" value="Удалить"/>
+            </form>
+        </td>
+    </tr>
+</table>
+<form th:method="POST" th:action="@{edit/task/add}">
+    <label for="newTaskName"></label>
+    <input style="margin-left: 22px" id="newTaskName" placeholder="Название задания" type="text" name="newTaskName"/>
+    <input type="submit" value="добавить новое задание"/>
+</form>
 </body>
 </html>

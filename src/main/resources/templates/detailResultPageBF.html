@@ -15,28 +15,46 @@
         <th>Значение</th>
     </tr>
     </thead>
-    <th:block th:if="${F.getScoreNumber()==2}">
         <tr>
             <td><span th:text="'Формула фишера до эксперемента'"> Результат </span></td>
             <td>
-                <span th:if="${BF.getFisherResultList().get(0).get(1)<=1.64}" th:text="'характеристики совпадают'"></span>
-                <span th:unless="${BF.getFisherResultList().get(0).get(1)<=1.64}" th:text="'характеристики не совпадают'"></span>
+                <span th:if="${BF.getFisherCTF()<=1.64}" th:text="'характеристики совпадают'"></span>
+                <span th:unless="${BF.getFisherCTF()<=1.64}" th:text="'характеристики не совпадают'"></span>
             </td>
             <td>
-                <span th:text="${BF.Format(BF.getFisherResultList().get(0).get(1))}"></span>
+                <span th:text="${BF.Format(BF.getFisherCTF())}"></span>
             </td>
         </tr>
         <tr>
             <td><span th:text="'Формула фишера после эксперемента'"> Результат </span></td>
             <td>
-                <span th:if="${BF.getFisherResultList().get(2).get(3)<=1.64}" th:text="'характеристики совпадают'"></span>
-                <span th:unless="${BF.getFisherResultList().get(2).get(3)<=1.64}" th:text="'характеристики не совпадают'"></span>
+                <span th:if="${BF.getFisherCTT()<=1.64}" th:text="'характеристики совпадают'"></span>
+                <span th:unless="${BF.getFisherCTT()<=1.64}" th:text="'характеристики не совпадают'"></span>
             </td>
             <td>
-                <span th:text="${BF.Format(BF.getFisherResultList().get(2).get(3))}"></span>
+                <span th:text="${BF.Format(BF.getFisherCTT())}"></span>
             </td>
         </tr>
-    </th:block>
+    <tr>
+        <td><span th:text="'Хи квадрат до эксперемента'"> Результат </span></td>
+        <td>
+            <span th:if="${BF.getXiCTF()<=BF.getAlphaForXi().get(BF.getScoreNumber()-2)}" th:text="'характеристики совпадают'"></span>
+            <span th:unless="${BF.getXiCTF()<=BF.getAlphaForXi().get(BF.getScoreNumber()-2)}" th:text="'характеристики не совпадают'"></span>
+        </td>
+        <td>
+            <span th:text="${BF.Format(BF.getXiCTF())}"></span>
+        </td>
+    </tr>
+    <tr>
+        <td><span th:text="'Хи квадрат после эксперемента'"> Результат </span></td>
+        <td>
+            <span th:if="${BF.getXiCTT()<=BF.getAlphaForXi().get(BF.getScoreNumber()-2)}" th:text="'характеристики совпадают'"></span>
+            <span th:unless="${BF.getXiCTT()<=BF.getAlphaForXi().get(BF.getScoreNumber()-2)}" th:text="'характеристики не совпадают'"></span>
+        </td>
+        <td>
+            <span th:text="${BF.Format(BF.getXiCTT())}"></span>
+        </td>
+    </tr>
 </table>
 
 <h3  style="text-align: center">Результаты измерений в порядковой шкале</h3>
@@ -61,7 +79,6 @@
     </tbody>
 </table>
 
-<th:block th:if="${BF.getScoreNumber()==2}">
     <h3  style="text-align: center">Эмпирические значения критерия Фишера</h3>
     <table>
         <thead>
@@ -88,7 +105,33 @@
         </tr>
         </tbody>
     </table>
-</th:block>
+
+<h3  style="text-align: center">Эмпирические значения критерия Хи квадрат для данных</h3>
+<table>
+    <thead>
+    <tr>
+        <th>  </th>
+        <th> Контрольная группа до начала эксперемента</th>
+        <th> Эксперементальная группа до начала эксперемента </th>
+        <th> Контрольная группа после эксперемента</th>
+        <th> Эксперементальная группа после эксперемента</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="result:${BF.getXiList()}">
+        <td>
+            <span th:if="${resultStat.index==0}" th:text="'Контрольная группа до начала эксперемента'"></span>
+            <span th:if="${resultStat.index==1}" th:text="'Эксперементальная группа до начала эксперемента'"></span>
+            <span th:if="${resultStat.index==2}" th:text="'Контрольная группа после эксперемента'"></span>
+            <span th:if="${resultStat.index==3}" th:text="'Эксперементальная группа после эксперемента'"></span>
+        </td>
+        <td><span th:text="${BF.Format(result.get(0))}"></span></td>
+        <td><span th:text="${BF.Format(result.get(1))}"></span></td>
+        <td><span th:text="${BF.Format(result.get(2))}"></span></td>
+        <td><span th:text="${BF.Format(result.get(3))}"></span></td>
+    </tr>
+    </tbody>
+</table>
 
 <h3>Данные для первой группы</h3>
 <h3> Результаты тестов:</h3>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" >
+    <title>Group edit</title>
+</head>
+<body>
+<h3>Редактирование участников группы</h3>
+<table>
+    <thead>
+    <tr>
+        <th>№</th>
+        <th>ФИО</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tr th:each="learner:${learners}">
+        <td th:text="${learnerStat.index+1}"></td>
+        <td>
+            <form th:method="POST" th:action="@{{id}/learner/edit(id=${needGroup})}">
+                <label>
+                <input type="text" name="FIO" th:value="${learner.getFirstName()+' '+learner.getLastName()}"/>
+                    <input type="hidden" name="learnerId" th:value="${learner.getId()}">
+                    <input type="submit" value="Изменить название">
+                </label>
+            </form>
+        </td>
+        <td>
+            <form th:method="POST" th:action="@{{id}/learner/delete(id=${needGroup})}">
+                <input type="hidden" name="learnerId" th:value="${learner.getId()}"/>
+                <input type="submit" value="Удалить"/>
+            </form>
+        </td>
+    </tr>
+</table>
+<form th:method="POST" th:action="@{{id}/learner/add(id=${needGroup})}">
+    <label>
+        <input type="text" name="FIO" th:placeholder="'Имя Фамилия'"/>
+        <input type="submit" value="Добавить ученика">
+    </label>
+</form>
+</body>
+</html>

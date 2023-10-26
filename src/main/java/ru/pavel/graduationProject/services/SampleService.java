@@ -7,6 +7,7 @@ import ru.pavel.graduationProject.models.Sample;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public interface SampleService extends JpaRepository<Sample,Integer> {
@@ -48,4 +49,6 @@ public interface SampleService extends JpaRepository<Sample,Integer> {
             "and learner.group_id=?2 " +
             "and sample.task_name_id=?3",nativeQuery = true)
     double getDispersionRealNumbers(boolean f1, int f2, int f3);
+
+    List<Sample> getALLByTaskNameIdAndLearnerGroupId(int taskID,int learnerGroup);
 }

@@ -8,7 +8,7 @@ import ru.pavel.graduationProject.models.TaskName;
 import ru.pavel.graduationProject.services.GroupService;
 import ru.pavel.graduationProject.services.TaskNameService;
 import ru.pavel.graduationProject.util.Calculation;
-
+import ru.pavel.graduationProject.util.Formulas;
 
 
 @Controller
@@ -17,15 +17,16 @@ public class MainPageController {
     private final GroupService groupService;
     private final TaskNameService taskNameService;
     private final Calculation calculation;
-
+    private final Formulas formulas;
 
     public MainPageController(GroupService groupService,
                               TaskNameService taskNameService,
-                              Calculation calculation)
+                              Calculation calculation, Formulas formulas)
     {
         this.groupService = groupService;
         this.taskNameService = taskNameService;
         this.calculation = calculation;
+        this.formulas = formulas;
     }
 
 @GetMapping
@@ -41,13 +42,13 @@ public class MainPageController {
         return "mainPage";
 }
 @PostMapping("/select")
-public String mainConfirm(
+public String mainConfirm(@RequestParam("selectScore") int score,
                           @RequestParam("id") String id) {
-        calculation.checkResult(id);
+        calculation.checkResult(id,score);
         if (calculation.getCheckResult()==0)
         {
             System.out.println("проверки выполненны");
-            return "redirect:/result/detail";
+            return "redirect:/result";
         }
         return "redirect:/main";
 }

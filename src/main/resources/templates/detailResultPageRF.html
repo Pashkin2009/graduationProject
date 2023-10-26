@@ -73,8 +73,8 @@
         <tr>
             <td><span th:text="'Хи квадрат после эксперемента'"> Результат </span></td>
             <td>
-                <span th:if="${RF.getXiList().get(2).get(3)<=RF.getAlphaForXi().get(RF.getScoreNumber()-2)}" th:text="'характеристики совпадают'"></span>
-                <span th:unless="${RF.getXiList().get(2).get(3)<=RF.getAlphaForXi().get(RF.getScoreNumber()-2)}" th:text="'характеристики не совпадают'"></span>
+                <span th:if="${RF.getXiCTT()<=RF.getAlphaForXi().get(RF.getScoreNumber()-2)}" th:text="'характеристики совпадают'"></span>
+                <span th:unless="${RF.getXiCTT()<=RF.getAlphaForXi().get(RF.getScoreNumber()-2)}" th:text="'характеристики не совпадают'"></span>
             </td>
             <td>
                 <span th:text="${RF.Format(RF.getXiList().get(2).get(3))}"></span>
@@ -85,21 +85,21 @@
         <tr>
             <td><span th:text="'Формула фишера до эксперемента'"> Результат </span></td>
             <td>
-                <span th:if="${RF.getFisherResultList().get(0).get(1)<=1.64}" th:text="'характеристики совпадают'"></span>
-                <span th:unless="${RF.getFisherResultList().get(0).get(1)<=1.64}" th:text="'характеристики не совпадают'"></span>
+                <span th:if="${RF.getFisherCTF()<=1.64}" th:text="'характеристики совпадают'"></span>
+                <span th:unless="${RF.getFisherCTF()<=1.64}" th:text="'характеристики не совпадают'"></span>
             </td>
             <td>
-                <span th:text="${RF.Format(RF.getFisherResultList().get(0).get(1))}"></span>
+                <span th:text="${RF.Format(RF.getFisherCTF())}"></span>
             </td>
         </tr>
         <tr>
             <td><span th:text="'Формула фишера после эксперемента'"> Результат </span></td>
             <td>
-                <span th:if="${RF.getFisherResultList().get(2).get(3)<=1.64}" th:text="'характеристики совпадают'"></span>
-                <span th:unless="${RF.getFisherResultList().get(2).get(3)<=1.64}" th:text="'характеристики не совпадают'"></span>
+                <span th:if="${RF.getFisherCTT()<=1.64}" th:text="'характеристики совпадают'"></span>
+                <span th:unless="${RF.getFisherCTT()<=1.64}" th:text="'характеристики не совпадают'"></span>
             </td>
             <td>
-                <span th:text="${RF.Format(RF.getFisherResultList().get(2).get(3))}"></span>
+                <span th:text="${RF.Format(RF.getFisherCTT())}"></span>
             </td>
         </tr>
     </th:block>
@@ -219,8 +219,8 @@
     </tr>
     <tr>
         <td><span th:text="'Среднее арифметическое'"> Результат </span></td>
-        <td><span th:text="${F.average(F.Format(RF.getGroups().get(0)))}"> Результат </span></td>
-        <td><span th:text="${F.average(F.Format(RF.getGroups().get(1)))}"> Результат </span></td>
+        <td><span th:text="${F.Format(F.average(RF.getGroups().get(0)))}"> Результат </span></td>
+        <td><span th:text="${F.Format(F.average(RF.getGroups().get(1)))}"> Результат </span></td>
     </tr>
     <tr>
         <td><span th:text="'Дисперсия'"> Результат </span></td>
@@ -264,8 +264,8 @@
     </tr>
     <tr>
         <td><span th:text="'Среднее арифметическое'"> Результат </span></td>
-        <td><span th:text="${F.average(F.Format(RF.getGroups().get(2)))}"> Результат </span></td>
-        <td><span th:text="${F.average(F.Format(RF.getGroups().get(3)))}"> Результат </span></td>
+        <td><span th:text="${F.Format(F.average(RF.getGroups().get(2)))}"> Результат </span></td>
+        <td><span th:text="${F.Format(F.average(RF.getGroups().get(3)))}"> Результат </span></td>
     </tr>
     <tr>
         <td><span th:text="'Дисперсия'"> Результат </span></td>

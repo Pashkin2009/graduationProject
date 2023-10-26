@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Result</title>
+</head>
+<body>
+<table>
+    <tr>
+        <td>Наименование задания</td>
+        <td th:text="${taskName.get(0).getSampleName()}"></td>
+    </tr>
+    <tr>
+        <td>Среднее значение для контрольной группы</td>
+        <td th:text="${average1}"></td>
+    </tr>
+    <tr>
+        <td>Среднее значение для эксперементальной группы</td>
+        <td th:text="${average2}"></td>
+    </tr>
+    <tr>
+        <td>Лучше или хуже результат</td>
+        <td th:text="${difference}"></td>
+    </tr>
+    <tr>
+        <td>Состояние групп до обучения</td>
+        <td th:text="${groupStatus.get(0)}"></td>
+    </tr>
+    <tr>
+        <td>Состояние групп после обучения</td>
+        <td th:text="${groupStatus.get(1)}"></td>
+    </tr>
+</table>
+<a href="/result/detail">Детальные результаты</a>
+</body>
+</html>

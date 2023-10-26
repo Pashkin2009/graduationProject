@@ -83,6 +83,12 @@ public class RealFormulas extends Formulas {
         return this.xiList.get(2).get(3);
     }
 
+    public double getFisherCTF(){return this.fisherResultList.get(0).get(1);}
+
+    public double getFisherCTT(){
+        return this.fisherResultList.get(2).get(3);
+    }
+
     public ArrayList<List<Double>> getFisherResultList() {
         return fisherResultList;
     }
@@ -187,31 +193,4 @@ public class RealFormulas extends Formulas {
         }
         return main;
     }
-
-    public ArrayList<List<Double>> xi(ArrayList<ArrayList<Integer>> scoreList,ArrayList<List<Double>> groups){
-        ArrayList<List<Double>> xiResult=new ArrayList<>();
-        double d;
-        for (int i=0;i<=3;i++){
-            ArrayList<Double> row=new ArrayList<>();
-            for (int j=0;j<=3;j++){
-                d=0.0;
-                for (List<Integer> x:scoreList){
-                    if (i==j){d=0.0;}
-                    else {
-                        if (j%2==0){
-                            d +=Math.pow(((double) x.get(i) / groups.get(2).size()) - ((double) x.get(j) / groups.get(0).size()), 2)/(x.get(i) + x.get(j));
-                        }
-                        else {
-                            d +=Math.pow(((double) x.get(i) / groups.get(0).size()) - ((double) x.get(j) / groups.get(2).size()), 2)/(x.get(i) + x.get(j));
-                        }
-                    }
-                }
-                d=groups.get(2).size()*groups.get(0).size()*d;
-                row.add(d);
-            }
-            xiResult.add(row);
-        }
-        return xiResult;
-    }
-
 }

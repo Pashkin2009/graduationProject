@@ -27,9 +27,11 @@
     </select>
     <div style="color: red" th:if="${check==1}" th:text="'Выбраны одинаковые группы'"></div>
     <br/>
+    <label for="selectScore">Выберите градацию шкалы порядка</label>
+    <input id="selectScore" name="selectScore" type="number" min="2" max="9" value="3"/>
+    <br/>
     <input type="submit" value="Выбрать данные"/>
 </form>
-
 <a href="/edit"> Редактировать</a>
 </body>
 </html>

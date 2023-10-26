@@ -15,7 +15,7 @@ public class Formulas {
     protected List<String> secondNameGroup1;
     protected List<String> firstNameGroup2;
     protected List<String> secondNameGroup2;
-    private int scoreNumber=2;//градация баллов
+    private int scoreNumber=3;//градация баллов
 
     private final ArrayList<Double> alphaForXi=new ArrayList<>(Arrays.asList(3.84,5.99,7.82,9.49,11.07,12.59,14.07,15.52,16.92));//критерий для хи
     @Autowired
@@ -151,6 +151,9 @@ public class Formulas {
     public double average(List<Double> list){
         return list.stream().mapToDouble(Double::doubleValue).sum()/list.size();
     }
+    public double averageInt(List<Integer> list){
+        return (double) list.stream().mapToInt(Integer::intValue).sum() /list.size();
+    }
 
     public double percent(double number, int quantity){
         return ( number /quantity)*100;
@@ -162,12 +165,10 @@ public class Formulas {
         for (int i = 0; i <= 3; i++) {
             ArrayList<Double> row = new ArrayList<>();
             for (int j = 0; j <= 3; j++) {
-                d=0.0;
                 if (i==j){d=0.0;}
                 else {
                     if (i % 2 == 0) {
                         if (j % 2 == 0) {
-                            //g1,g1
                             d=Math.abs(2*Math.asin(Math.sqrt((double) list.get(1).get(i) /group1Size))-2*Math.asin(Math.sqrt((double) list.get(1).get(j)/group1Size)));
                         } else {
                             //g1,g2
@@ -189,5 +190,31 @@ public class Formulas {
             fisherResult.add(row);
         }
         return fisherResult;
+    }
+
+    public ArrayList<List<Double>> xi(ArrayList<ArrayList<Integer>> scoreList,int g1size,int g2size){
+        ArrayList<List<Double>> xiResult=new ArrayList<>();
+        double d;
+        for (int i=0;i<=3;i++){
+            ArrayList<Double> row=new ArrayList<>();
+            for (int j=0;j<=3;j++){
+                d=0.0;
+                for (List<Integer> x:scoreList){
+                    if (i==j||x.get(j)==0||x.get(i)==0){d=0.0;}
+                    else {
+                        if (j%2==0){
+                            d +=Math.pow(((double) x.get(i) / g2size) - ((double) x.get(j) / g1size ), 2)/(x.get(i) + x.get(j));
+                        }
+                        else {
+                            d +=Math.pow(((double) x.get(i) / g1size ) - ((double) x.get(j) / g2size ), 2)/(x.get(i) + x.get(j));
+                        }
+                    }
+                }
+                d=g2size*g1size*d;
+                row.add(d);
+            }
+            xiResult.add(row);
+        }
+        return xiResult;
     }
 }

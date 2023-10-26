@@ -212,8 +212,8 @@
     </tr>
     <tr>
         <td><span th:text="'Среднее арифметическое'"> Результат </span></td>
-        <td><span th:text="${NF.Format(NF.getGroup1CTF())}"> Результат </span></td>
-        <td><span th:text="${NF.Format(NF.getGroup1CTT())}"> Результат </span></td>
+        <td><span th:text="${NF.Format(F.average(NF.getGroup1CTF()))}"> Результат </span></td>
+        <td><span th:text="${NF.Format(F.average(NF.getGroup1CTT()))}"> Результат </span></td>
     </tr>
     <tr>
         <td><span th:text="'Дисперсия'"> Результат </span></td>
@@ -257,8 +257,8 @@
         </tr>
         <tr>
             <td><span th:text="'Среднее арифметическое'"> Результат </span></td>
-            <td><span th:text="${NF.Format(NF.getGroup2CTF())}"> Результат </span></td>
-            <td><span th:text="${NF.Format(NF.getGroup2CTT())}"> Результат </span></td>
+            <td><span th:text="${NF.Format(F.average(NF.getGroup2CTF()))}"> Результат </span></td>
+            <td><span th:text="${NF.Format(F.average(NF.getGroup2CTT()))}"> Результат </span></td>
         </tr>
         <tr>
             <td><span th:text="'Дисперсия'"> Результат </span></td>
