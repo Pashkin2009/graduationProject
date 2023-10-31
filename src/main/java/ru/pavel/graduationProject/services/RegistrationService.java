@@ -16,14 +16,14 @@ public class RegistrationService {
 @Autowired
     public RegistrationService(PeopleRepository peopleRepository, PasswordEncoder passwordEncoder) {
         this.peopleRepository = peopleRepository;
-
-    this.passwordEncoder = passwordEncoder;
+        this.passwordEncoder = passwordEncoder;
 }
+
 @Transactional
     public  void register(Person person){
     person.setPassword(passwordEncoder.encode(person.getPassword()));
     person.setCreation_date(new Timestamp(System.currentTimeMillis()));
-    person.setRole("ROLE_USER");
+    person.setRole(person.getRole());
     peopleRepository.save(person);
     }
 }

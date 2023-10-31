@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit user</title>
+</head>
+<body>
+<div th:each="person:${people}">
+    <form th:method="POST" th:action="@{/admin/edit}" th:object="${person}">
+        <input type="hidden" th:name="'id'" th:value="*{id}">
+        <label>
+        <input type="text"  th:name="username" th:value="*{username}">
+        </label>
+        <label>
+        <select th:name="'role'">
+            <option th:text="*{role}=='ROLE_USER'?'Пользователь':'Администратор'" th:value="*{role}=='ROLE_USER'?'ROLE_USER':'ROLE_ADMIN'"></option>
+            <option th:text="*{role}=='ROLE_ADMIN'?'Пользователь':'Администратор'" th:value="*{role}=='ROLE_ADMIN'?'ROLE_USER':'ROLE_ADMIN'"></option>
+        </select>
+        </label>
+        <input type="submit" value="Изменить">
+    </form>
+    <form th:method="POST" th:action="@{/admin/delete}" th:object="${person}">
+        <input type="hidden" th:name="'id'" th:value="*{id}">
+        <input type="submit" value="Удалить">
+    </form>
+</div>
+</body>
+</html>

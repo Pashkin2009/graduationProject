@@ -58,8 +58,8 @@
         <tr>
             <td><span th:text="'Хи квадрат до эксперемента'"> Результат </span></td>
             <td>
-                <span th:if="${NF.getXiCTF()<=NF.getAlphaForXi().get(NF.getScoreNumber()-2)}" th:text="'характеристики совпадают'"></span>
-                <span th:unless="${NF.getXiCTF()<=NF.getAlphaForXi().get(NF.getScoreNumber()-2)}" th:text="'характеристики не совпадают'"></span>
+                <span th:if="${NF.getXiCTF()<=F.getAlphaForXi().get(F.getScoreNumber()-2)}" th:text="'характеристики совпадают'"></span>
+                <span th:unless="${NF.getXiCTF()<=F.getAlphaForXi().get(F.getScoreNumber()-2)}" th:text="'характеристики не совпадают'"></span>
             </td>
             <td>
                 <span th:text="${NF.Format(NF.getXiCTF())}"></span>
@@ -68,8 +68,8 @@
         <tr>
             <td><span th:text="'Хи квадрат после эксперемента'"> Результат </span></td>
             <td>
-                <span th:if="${NF.getXiCTT()<=NF.getAlphaForXi().get(NF.getScoreNumber()-2)}" th:text="'характеристики совпадают'"></span>
-                <span th:unless="${NF.getXiCTT()<=NF.getAlphaForXi().get(NF.getScoreNumber()-2)}" th:text="'характеристики не совпадают'"></span>
+                <span th:if="${NF.getXiCTT()<=F.getAlphaForXi().get(F.getScoreNumber()-2)}" th:text="'характеристики совпадают'"></span>
+                <span th:unless="${NF.getXiCTT()<=F.getAlphaForXi().get(F.getScoreNumber()-2)}" th:text="'характеристики не совпадают'"></span>
             </td>
             <td>
                 <span th:text="${NF.Format(NF.getXiCTT())}"></span>

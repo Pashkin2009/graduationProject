@@ -207,7 +207,7 @@ public class Calculation {
                             booleanFormulas.setGroupsString(booleanFormulas.convertGroupToString(booleanFormulas.getGroups(),"Сдал","Не сдал"));
                             booleanFormulas.setScore(booleanFormulas.conversionToOrdinalScale(booleanFormulas.getGroups()));
                             booleanFormulas.setFisherResultList(formulas.fisherCritrery(booleanFormulas.getScore(),booleanFormulas.getGroups().get(0).size(),booleanFormulas.getGroups().get(2).size()));
-                            booleanFormulas.setXiList(formulas.fisherCritrery(booleanFormulas.getScore(),booleanFormulas.getGroups().get(0).size(),booleanFormulas.getGroups().get(2).size()));
+                            booleanFormulas.setXiList(formulas.xi(booleanFormulas.getScore(),booleanFormulas.getGroups().get(0).size(),booleanFormulas.getGroups().get(2).size()));
                         }
                         else
                         {
@@ -267,6 +267,7 @@ public class Calculation {
         return learnerRepository.findAllByGroup_Id(id);
     }
     public void deleteLearner(int id){learnerRepository.deleteLearnerById(id);}
+    public Optional<Learner> findLearnerByFIO(String fn,String ln){return learnerRepository.findByFirstNameAndLastName(fn, ln);}
     public void editLearnerFIO(int id,String newName){
         if(newName.matches("[А-Я][а-яё]{2,15}\\s[А-ЯЁ][а-яё]{2,15}"))
         {
@@ -364,7 +365,8 @@ public class Calculation {
            if (realFormulas.getVilkasList().get(0)<=1.96){before++;}
            if (realFormulas.getXiCTF()<=formulas.getAlphaForXi().get(formulas.getScoreNumber()-2)){before++;}
            if (realFormulas.getFisherCTF()<=1.64&&formulas.getScoreNumber()==2){before++;}
-           if (formulas.getScoreNumber()==2){
+           if (before==0){result.add("Состояния различны");}
+           else if (formulas.getScoreNumber()==2){
                result.add("Состояния совпадают по "+before+" критериям из 4");
            } else {result.add("Состояния совпадают по "+before+" критериям из 3");}
 
@@ -372,7 +374,8 @@ public class Calculation {
            if (realFormulas.getVilkasList().get(1)<=1.96){after++;}
            if (realFormulas.getXiCTT()<=formulas.getAlphaForXi().get(formulas.getScoreNumber()-2)){after++;}
            if (realFormulas.getFisherCTT()<=1.64&&formulas.getScoreNumber()==2){after++;}
-           if (formulas.getScoreNumber()==2){
+           if (after==0){result.add("Состояния различны");}
+           else if (formulas.getScoreNumber()==2){
                result.add("Состояния совпадают по "+after+" критериям из 4");
            } else {result.add("Состояния совпадают по "+after+" критериям из 3");}
         }
@@ -381,26 +384,41 @@ public class Calculation {
             if (numberFormulas.getVilkas1()<=1.96){before++;}
             if (numberFormulas.getXiCTF()<=formulas.getAlphaForXi().get(formulas.getScoreNumber()-2)){before++;}
             if (numberFormulas.getFisherCTF()<=1.64&&formulas.getScoreNumber()==2){before++;}
-            if (formulas.getScoreNumber()==2){
+            if (before==0){result.add("Состояния различны");}
+            else if (formulas.getScoreNumber()==2){
                 result.add("Состояния совпадают по "+before+" критериям из 4");
             } else {result.add("Состояния совпадают по "+before+" критериям из 3");}
 
             if (numberFormulas.getCramer2()<=1.96){after++;}
+            System.out.println("1 "+after);
             if (numberFormulas.getVilkas2()<=1.96){after++;}
+            System.out.println("2 "+after);
             if (numberFormulas.getXiCTT()<=formulas.getAlphaForXi().get(formulas.getScoreNumber()-2)){after++;}
+            System.out.println("#3 "+after+" "+numberFormulas.getXiCTT()+"xi"+formulas.getAlphaForXi().get(formulas.getScoreNumber()-2));
             if (numberFormulas.getFisherCTT()<=1.64&&formulas.getScoreNumber()==2){after++;}
-            if (formulas.getScoreNumber()==2){
+            System.out.println("4 "+after);
+            if (after==0){result.add("Состояния различны");}
+            else if (formulas.getScoreNumber()==2){
                 result.add("Состояния совпадают по "+after+" критериям из 4");
             } else {result.add("Состояния совпадают по "+after+" критериям из 3");}
         }
         else {
             if (booleanFormulas.getXiCTF()<=formulas.getAlphaForXi().get(formulas.getScoreNumber()-2)){before++;}
-            if (booleanFormulas.getFisherCTF()<=1.64&&formulas.getScoreNumber()==2){before++;}
+            if (before==0){result.add("Состояния различны");}
+            else if (booleanFormulas.getFisherCTF()<=1.64&&formulas.getScoreNumber()==2){before++;}
                 result.add("Состояния совпадают по "+before+" критериям из 2");
             if (booleanFormulas.getXiCTT()<=formulas.getAlphaForXi().get(formulas.getScoreNumber()-2)){after++;}
-            if (booleanFormulas.getFisherCTT()<=1.64&&formulas.getScoreNumber()==2){after++;}
+            if (after==0){result.add("Состояния различны");}
+            else if (booleanFormulas.getFisherCTT()<=1.64&&formulas.getScoreNumber()==2){after++;}
                 result.add("Состояния совпадают по "+after+" критериям из 2");
         }
         return result;
     }
+    public void addFloatSample(int id, double value, boolean ct,int taskName){sampleService.addFloatSample(id,value,ct,taskName);}
+    public void addIntSample(int id, int value, boolean ct,int taskName){sampleService.addIntegerSample(id,value,ct,taskName);}
+    public void addBooleanSample(int id, boolean value, boolean ct,int taskName){sampleService.addBooleanSample(id,value,ct,taskName);}
+    public Optional<Sample> findSampleByLearnerIdGroupTask(int id,boolean bool,int taskId){return sampleService.findByLearnerIdAndControlTaskAndTaskNameId(id,bool,taskId);}
+    public void updateSampleDouble(double floatData,long sampleId){sampleService.updateSampleDouble(floatData,sampleId);}
+    public void updateSampleInt(int integerData,long sampleId){sampleService.updateSampleInteger(integerData,sampleId);}
+    public void updateSampleBool(boolean boolData,long sampleId){sampleService.updateSampleBoolean(boolData,sampleId);}
 }

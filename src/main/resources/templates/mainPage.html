@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8">
     <title>Main Page</title>
@@ -32,6 +32,10 @@
     <br/>
     <input type="submit" value="Выбрать данные"/>
 </form>
-<a href="/edit"> Редактировать</a>
+<a href="/edit"> Редактировать</a><br>
+<div sec:authorize="hasRole('ROLE_ADMIN')">
+    <a href="/admin/registration"> Зарегистрировать пользователя</a><br>
+    <a href="/admin/edit"> Редактировать пользователя</a>
+</div>
 </body>
 </html>

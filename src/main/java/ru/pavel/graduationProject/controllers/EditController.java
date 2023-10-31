@@ -2,15 +2,15 @@ package ru.pavel.graduationProject.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.pavel.graduationProject.models.Learner;
 import ru.pavel.graduationProject.services.GroupService;
 import ru.pavel.graduationProject.services.TaskNameService;
 import ru.pavel.graduationProject.util.Calculation;
+import ru.pavel.graduationProject.util.WorkingWithFiles;
 
+import java.io.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,23 +19,27 @@ public class EditController {
 GroupService groupService;
 TaskNameService taskNameService;
 Calculation calculation;
+WorkingWithFiles workingWithFiles;
 
-    public EditController(GroupService groupService, TaskNameService taskNameService, Calculation calculation) {
+    public EditController(GroupService groupService, TaskNameService taskNameService, Calculation calculation,WorkingWithFiles workingWithFiles) {
         this.groupService = groupService;
         this.taskNameService = taskNameService;
         this.calculation = calculation;
+        this.workingWithFiles=workingWithFiles;
     }
 
     @GetMapping("/edit")
     public String editPage(Model model){
         model.addAttribute("allGroup",groupService.findAll());
         model.addAttribute("allTask",taskNameService.findAll());
+        workingWithFiles.getError().clear();
         return "edit";
     }
     @GetMapping("edit/group/{groupId}")
     public String editGroupPage(Model model,@PathVariable int groupId){
         model.addAttribute("needGroup",groupId);
         model.addAttribute("learners",calculation.getLearnerByGroupId(groupId));
+        workingWithFiles.getError().clear();
         return "editGroup";
     }
     @PostMapping("/edit/group/name")
@@ -102,6 +106,7 @@ Calculation calculation;
         model.addAttribute("taskName",taskId);
         model.addAttribute("FIO",learners);
         model.addAttribute("allResult",calculation.getStringResultAndFIOByTaskAndGroupId(groupId,taskId,learners));
+        model.addAttribute("error",workingWithFiles.getError());
         return "editResult";
     }
 
@@ -116,4 +121,11 @@ Calculation calculation;
         return "redirect:/edit/task/result?groupName="+groupName+"&taskName="+taskName;
     }
 
+    @PostMapping(value = "/edit/task/result/file")
+    public String fileResult(@RequestParam("groupName")int groupName,
+                             @RequestParam("taskName")int taskName,
+                             @RequestParam("file") MultipartFile file) throws IOException {
+        workingWithFiles.addResultFromFile(file,taskName);
+        return "redirect:/edit/task/result?groupName="+groupName+"&taskName="+taskName;
+    }
 }

@@ -25,8 +25,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity  httpSecurity) throws Exception{
     //Конфигурация авторизации
         httpSecurity.authorizeRequests()
-                .antMatchers("/admin").hasAnyRole("ADMIN")//Tолько администратор
-                .antMatchers("/authorization/login","/authorization/registration","/error").permitAll()//доступны не аторизированным пользователям
+                .antMatchers("/admin","/admin/**").hasAnyRole("ADMIN")//Tолько администратор
+                .antMatchers("/authorization/login","/error").permitAll()//доступны не аторизированным пользователям
                 .anyRequest().hasAnyRole("USER","ADMIN")
                 .and()
                 .formLogin()

@@ -14,33 +14,11 @@ import ru.pavel.graduationProject.util.PersonValidator;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/authorization")
 public class AuthorizationController {
-    private final PersonValidator personValidator;
-    private final RegistrationService registrationService;
 
-
-    @Autowired
-    public AuthorizationController(PersonValidator personValidator, RegistrationService registrationService) {
-        this.personValidator = personValidator;
-        this.registrationService = registrationService;
-    }
-
-    @GetMapping("/login")
+    @GetMapping("/authorization/login")
     public String login(){
         return "authorization/login_page";
     }
 
-    @GetMapping("/registration")
-    public String registration(@ModelAttribute("Person")Person person){
-        return "authorization/registration_page";
-    }
-
-    @PostMapping("/registration")
-    public String registrationProcess(@ModelAttribute("Person") @Valid Person person, BindingResult bindingResult){
-        personValidator.validate(person,bindingResult);
-        if (bindingResult.hasErrors()) return "authorization/registration_page";
-        registrationService.register(person);
-    return "redirect:/authorization/login";
-    }
 }

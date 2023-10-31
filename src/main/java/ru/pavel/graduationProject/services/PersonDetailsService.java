@@ -10,6 +10,7 @@ import ru.pavel.graduationProject.repositories.PeopleRepository;
 import ru.pavel.graduationProject.security.PersonDetails;
 
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -31,5 +32,11 @@ public class PersonDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found");
 
         return new PersonDetails(person.get());
+    }
+    public void updateUsernameAndRole(Person updatePerson){
+        Person person =peopleRepository.findById(updatePerson.getId());
+        updatePerson.setPassword(person.getPassword());
+        updatePerson.setCreation_date(person.getCreation_date());
+        peopleRepository.save(updatePerson);
     }
 }
